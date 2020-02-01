@@ -1,0 +1,125 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'assets/plugins/dropify/css/dropify.min.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>Meu Perfil</h2>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i>
+                                zDesk</a>
+                            </li>
+                            <li class="breadcrumb-item">Profile</li>
+                            <li class="breadcrumb-item active">Edit</li>
+                        </ul>
+                        <button class="btn btn-primary btn-icon mobile_menu" type="button">
+                            <i class="zmdi zmdi-sort-amount-desc"></i></button>
+                    </div>
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card mcard_3">
+                            <div class="body">
+                                <a href="profile.html"><img src="{% static 'assets/images/profile_av.jpg' %}" class="rounded-circle shadow " alt="profile-image"></a>
+                                <h4 class="m-t-10">
+                                    {% if user.first_name %}
+                                        {{ user }} ({{ user.first_name }} {{ user.last_name }})
+                                    {% else %}
+                                        {{ user }}
+                                    {% endif %}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="social-links list-unstyled">
+                                            <li>
+                                                <a title="facebook" href="javascript:void(0);"><i class="zmdi zmdi-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a title="twitter" href="javascript:void(0);"><i class="zmdi zmdi-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a title="instagram" href="javascript:void(0);"><i class="zmdi zmdi-instagram"></i></a>
+                                            </li>
+                                        </ul>
+                                        <p class="text-muted">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
+                                        <small class="text-muted">Email address: </small>
+                                        <p>{{ user.email }}</p>
+                                        <hr>
+                                        <small class="text-muted">Phone: </small>
+                                        <p>+ 202-555-0191</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Dados do<strong> usuário</strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="First Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="City">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="E-mail">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Country">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <textarea rows="4" class="form-control no-resize" placeholder="Address Line 1"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p>Alterar foto do perfil</p>
+                                        <input type="file" class="dropify" data-max-file-size="1M" data-allowed-file-extensions="jpg png">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'assets/plugins/dropify/js/dropify.min.js' %}"></script>
+    <script src="{% static 'assets/js/pages/forms/dropify.js' %}"></script>
+{% endblock %}
