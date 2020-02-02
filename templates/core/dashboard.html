@@ -82,24 +82,25 @@
                     <div class="card">
                         <div class="header">
                             <h2>Para<strong> Fazer</strong></h2>
-{#                            <ul class="header-dropdown">#}
-{#                                <li class="dropdown">#}
-{#                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#}
-{#                                        <i class="zmdi zmdi-more"></i> </a>#}
-{#                                    <ul class="dropdown-menu dropdown-menu-right slideUp">#}
-{#                                        <li><a href="javascript:void(0);">Action</a></li>#}
-{#                                        <li><a href="javascript:void(0);">Another action</a></li>#}
-{#                                        <li><a href="javascript:void(0);">Something else</a></li>#}
-{#                                    </ul>#}
-{#                                </li>#}
-{#                                <li class="remove">#}
-{#                                    <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>#}
-{#                                </li>#}
-{#                            </ul>#}
+                            <ul class="header-dropdown">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else</a></li>
+                                    </ul>
+                                </li>
+                                <li class="remove">
+                                    <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                <table id="para-fazer" class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
@@ -126,7 +127,7 @@
                                         <td>System Architect</td>
                                         <td>Edinburgh</td>
                                         <td>61</td>
-                                        <td>2011/04/25</td>
+                                        <td>01/12/2018</td>
                                         <td>$320,800</td>
                                     </tr>
                                     <tr class="table-success">
@@ -134,7 +135,7 @@
                                         <td>Accountant</td>
                                         <td>Tokyo</td>
                                         <td>63</td>
-                                        <td>2011/07/25</td>
+                                        <td>25/12/2018</td>
                                         <td>$170,750</td>
                                     </tr>
                                     <tr class="table-info">
@@ -142,7 +143,7 @@
                                         <td>Junior Technical Author</td>
                                         <td>San Francisco</td>
                                         <td>66</td>
-                                        <td>2009/01/12</td>
+                                        <td>05/12/2019</td>
                                         <td>$86,000</td>
                                     </tr>
                                     <tr>
@@ -150,7 +151,7 @@
                                         <td>Senior Javascript Developer</td>
                                         <td>Edinburgh</td>
                                         <td>22</td>
-                                        <td>2012/03/29</td>
+                                        <td>10/01/2020</td>
                                         <td>$433,060</td>
                                     </tr>
                                     <tr>
@@ -158,42 +159,9 @@
                                         <td>Accountant</td>
                                         <td>Tokyo</td>
                                         <td>33</td>
-                                        <td>2008/11/28</td>
+                                        <td>01/02/2020</td>
                                         <td>$162,700</td>
                                     </tr>
-                                    <tr>
-                                        <td>Brielle Williamson</td>
-                                        <td>Integration Specialist</td>
-                                        <td>New York</td>
-                                        <td>61</td>
-                                        <td>2012/12/02</td>
-                                        <td>$372,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Herrod Chandler</td>
-                                        <td>Sales Assistant</td>
-                                        <td>San Francisco</td>
-                                        <td>59</td>
-                                        <td>2012/08/06</td>
-                                        <td>$137,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rhona Davidson</td>
-                                        <td>Integration Specialist</td>
-                                        <td>Tokyo</td>
-                                        <td>55</td>
-                                        <td>2010/10/14</td>
-                                        <td>$327,900</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Colleen Hurst</td>
-                                        <td>Javascript Developer</td>
-                                        <td>San Francisco</td>
-                                        <td>39</td>
-                                        <td>2009/09/15</td>
-                                        <td>$205,500</td>
-                                    </tr>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -213,5 +181,9 @@
     <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.flash.min.js' %}"></script>
     <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
     <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/extras/moment.min.js' %}"></script>
+    <script src="{% static 'assets/js/extras/datetime-moment.js' %}"></script>
+
     <script src="{% static 'assets/js/pages/tables/jquery-datatable.js' %}"></script>
 {% endblock extra_js %}

@@ -32,14 +32,14 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="card mcard_3">
                             <div class="body">
-                                <a href="profile.html"><img src="{% static 'assets/images/profile_av.jpg' %}" class="rounded-circle shadow " alt="profile-image"></a>
-                                <h4 class="m-t-10">
-                                    {% if user.first_name %}
-                                        {{ user }} ({{ user.first_name }} {{ user.last_name }})
+                                <a href="profile.html">
+                                    {% if user.userprofile.avatar %}
+                                        <img src="{% get_media_prefix %}{{ user.userprofile.avatar }}" class="rounded-circle shadow " alt="Profile image">
                                     {% else %}
-                                        {{ user }}
+                                        <img src="{% static 'assets/images/profile_av.jpg' %}" class="rounded-circle shadow " alt="Profile image">
                                     {% endif %}
-                                </h4>
+                                </a>
+                                <h4 class="m-t-10">{{ user }}</h4>
                                 <div class="row">
                                     <div class="col-12">
                                         <ul class="social-links list-unstyled">
@@ -63,53 +63,73 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
+                    {% if form.errors %}
+                        {{ form.errors }}
+                    {% endif %}
+
                     <div class="col-lg-8 col-md-12">
                         <div class="card">
                             <div class="header">
                                 <h2>Dados do<strong> usuário</strong></h2>
                             </div>
                             <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="First Name">
+                                <form action="." method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row clearfix">
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                {{ form.first_name }}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                {{ form.last_name }}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                {{ form.email }}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="City">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Country">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea rows="4" class="form-control no-resize" placeholder="Address Line 1"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p>Alterar foto do perfil</p>
+                                            <input type="file"
+                                                   class="dropify"
+                                                   name="userprofile-0-avatar"
+                                                   data-max-file-size="1M"
+                                                   data-allowed-file-extensions="jpg png"
+                                                   id="id_userprofile-0-avatar"
+{#                                                   data-default-file="{% get_media_prefix %}{{ user.userprofile.avatar }}"#}
+                                            >
+                                        </div>
+                                        <div class="col-md-12" id="extraavatarfiel">
+                                            {{ formset.management_form }}
+                                            {{ formset }}
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button href="{% url 'profile_edit' %}" class="btn btn-primary">
+                                                Save Changes
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Last Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="City">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="E-mail">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Country">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <textarea rows="4" class="form-control no-resize" placeholder="Address Line 1"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <p>Alterar foto do perfil</p>
-                                        <input type="file" class="dropify" data-max-file-size="1M" data-allowed-file-extensions="jpg png">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button class="btn btn-primary">Save Changes</button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -122,4 +142,10 @@
 {% block extra_js %}
     <script src="{% static 'assets/plugins/dropify/js/dropify.min.js' %}"></script>
     <script src="{% static 'assets/js/pages/forms/dropify.js' %}"></script>
+
+    <script>
+        $(function () {
+            $('#id_userprofile-0-avatar').addClass('dropify');
+        });
+    </script>
 {% endblock %}
