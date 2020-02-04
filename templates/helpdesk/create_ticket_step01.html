@@ -1,0 +1,80 @@
+<!doctype html>
+{% load static %}
+<html class="no-js " lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+
+    <title>:: zDesk :: Você precisa de ajuda com qual equipamento?</title>
+    <!-- Favicon-->
+    <link rel="icon" href="{% static "favicon.png" %}" type="image/png"> <!-- Favicon-->
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.min.css' %}">
+
+    <style type="text/css">
+        label {
+            cursor: pointer;
+            filter: grayscale(100%);
+        }
+
+        label:hover {
+            filter: grayscale(0);
+        }
+
+        input[type="radio"]:checked + label {
+            filter: grayscale(0);
+        }
+    </style>
+</head>
+
+<body class="theme-blue">
+<section class="content" style="margin: 20px; padding: 20px;">
+
+    <div class="body_scroll">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Você precisa de ajuda com qual <strong>equipamento?</strong></h2>
+                        </div>
+                        <div class="body">
+                            <form action="{% url 'ticket_create_step02' %}" method="post">
+                                {% csrf_token %}
+
+                                <div class="row">
+
+                                    {% for queue in queues %}
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group d-flex justify-content-around">
+                                                <input type="radio" name="maquina" class="sr-only" id="{{ queue.title }}" value="{{ queue.title }}" required>
+                                                <label for="{{ queue.title }}">
+                                                    <h2 class="align-center m-2">{{ queue.title }}</h2>
+                                                    <img src="{% get_media_prefix %}{{ queue.image }}" alt="{{ queue.title }}">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                    <div class="col-12">
+                                        <button class="btn btn-primary btn-lg">Próximo</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Jquery Core Js -->
+<script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
+<script src="{% static 'assets/bundles/vendorscripts.bundle.js' %}"></script> <!-- Lib Scripts Plugin Js -->
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+{% load static %}
+<html class="no-js " lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+
+    <title>:: zDesk :: Qual o problema apresentado?</title>
+    <!-- Favicon-->
+    <link rel="icon" href="{% static "favicon.png" %}" type="image/png"> <!-- Favicon-->
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.min.css' %}">
+
+    <style type="text/css">
+        label {
+            cursor: pointer;
+            filter: grayscale(100%);
+        }
+
+        label:hover {
+            filter: grayscale(0);
+        }
+
+        input[type="radio"]:checked + label {
+            filter: grayscale(0);
+        }
+    </style>
+</head>
+
+<body class="theme-blue">
+<section class="content" style="margin: 20px; padding: 20px;">
+
+    <div class="body_scroll">
+
+
+        <div class="container-fluid">
+
+            <div class="row clearfix">
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Qual o <strong>problema</strong> apresentado?</h2>
+                            <p>marque quantos forem necessários</p>
+
+                            <hr>
+                            <p>{{ queue }}</p>
+
+                        </div>
+                        <div class="body">
+                            <form action="{% url 'public_ticket_create' %}" method="post">
+                                {% csrf_token %}
+                                <input id="{{ queue }}" name="queue" type="hidden" value="{{ queue }}">
+                                <div class="row">
+                                    <div class="col-md-12 checkbox-group options">
+                                        <div class="checkbox">
+                                            <input name="problemas" class="form-control" value="Máquina não liga" id="procheck1" type="checkbox" required>
+                                            <label for="procheck1">Máquina não liga</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input name="problemas" value="Corte não fecha o Ponto" id="procheck2" type="checkbox" required>
+                                            <label for="procheck2">Corte não fecha o Ponto</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input name="problemas" value="Não Consigo Fazer o Corte de Contorno" id="procheck3" type="checkbox" required>
+                                            <label for="procheck3">Não Consigo Fazer o Corte de Contorno</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input name="problemas" value="Cabeçote não se mexe" id="procheck4" type="checkbox" required>
+                                            <label for="procheck4">Cabeçote não se mexe</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input name="problemas" value="Contando com Medida Errada" id="procheck5" type="checkbox" required>
+                                            <label for="procheck5">Contando com Medida Errada</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input name="problemas" value="Computador não comunica com a máquina" id="procheck6" type="checkbox" required>
+                                            <label for="procheck6">Computador não comunica com a máquina</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input name="problemas" value="Outros" id="procheckoutros" type="checkbox" onclick="showOtherField()" required>
+                                            <label for="procheckoutros">Outros</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Especifique o problema" style="display: none;"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <input name="nome" type="text" class="form-control" placeholder="Seu nome" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Empresa">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="input-group masked-input mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                                            </div>
+                                            <input type="email" class="form-control email" placeholder="Seu e-mail" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="input-group masked-input mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="zmdi zmdi-smartphone"></i></span>
+                                            </div>
+                                            <input id="whatscel" type="text" class="form-control mobile-phone-number" placeholder="Whats / Celular" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <input id="soucliente" type="checkbox">
+                                                <label for="soucliente">Já sou cliente</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-info">Save Changes</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Jquery Core Js -->
+<script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
+<script src="{% static 'assets/bundles/vendorscripts.bundle.js' %}"></script> <!-- Lib Scripts Plugin Js -->
+
+<script src="{% static 'assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js' %}"></script>
+
+<script>
+    function showOtherField() {
+        const checkBox = document.getElementById("procheckoutros");
+        const otherfield = document.getElementById("outro-problema");
+        if (checkBox.checked == true) {
+            otherfield.style.display = "block";
+            otherfield.setAttribute("required", "");
+            otherfield.setAttribute("name", "outros problemas");
+        } else {
+            otherfield.style.display = "none";
+            otherfield.removeAttribute("required");
+            otherfield.removeAttribute("name");
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#whatscel').inputmask('(99) 9999[9]-9999');
+    });
+
+    $(function () {
+        const requiredCheckboxes = $('.options :checkbox[required]');
+        requiredCheckboxes.change(function () {
+            if (requiredCheckboxes.is(':checked')) {
+                requiredCheckboxes.removeAttr('required');
+            } else {
+                requiredCheckboxes.attr('required', 'required');
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
+
