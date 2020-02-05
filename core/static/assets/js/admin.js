@@ -390,7 +390,6 @@ window.Aero= {
 	    'gray-light': '#aab0b6',
 	    'gray-lighter': '#dbdde0',
 	    'gray-lightest': '#f3f4f5',
-	    'gray-dark': '#343a40',
 	    'gray-dark-darkest': '#0a0c0d',
 	    'gray-dark-darker': '#15171a',
 	    'gray-dark-dark': '#2a2e33',
