@@ -53,7 +53,7 @@
                                                 <input type="radio" name="maquina" class="sr-only" id="{{ queue.title }}" value="{{ queue.title }}" required>
                                                 <label for="{{ queue.title }}">
                                                     <h2 class="align-center m-2">{{ queue.title }}</h2>
-                                                    <img src="{% get_media_prefix %}{{ queue.image }}" alt="{{ queue.title }}">
+                                                    <img src="{{ queue.image.url }}" alt="{{ queue.title }}">
                                                 </label>
                                             </div>
                                         </div>
