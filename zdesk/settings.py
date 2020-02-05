@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import django_heroku
 from decouple import config, Csv
 from dj_database_url import parse as dburl
 
@@ -133,3 +134,35 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 COLLECTFAST_ENABLED = False
+
+# Configure Django App for Heroku.
+django_heroku.settings(locals())
+
+# Force ssl if run in Heroku
+if 'DYNO' in os.environ:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Configure Email
+EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Cloudinary
+CLOUDINARY_URL = config('CLOUDINARY_URL', default=False)
+
+if CLOUDINARY_URL:  # pragma: no cover
+    INSTALLED_APPS.remove('django.contrib.staticfiles')
+    INSTALLED_APPS = [
+        'cloudinary_storage',
+        'django.contrib.staticfiles',
+        'cloudinary',
+    ] + INSTALLED_APPS
+
+    COLLECTFAST_ENABLED = True
+
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
