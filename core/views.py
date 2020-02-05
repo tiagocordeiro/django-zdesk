@@ -5,11 +5,16 @@ from django.shortcuts import render, redirect
 
 from core.forms import ProfileForm
 from core.models import UserProfile
+from helpdesk.models import Ticket
 
 
 @login_required
 def dashboard(request):
-    return render(request, 'core/dashboard.html', )
+    tickets = Ticket.objects.all()
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'core/dashboard.html', context)
 
 
 @login_required

@@ -1,7 +1,8 @@
 $(function () {
     $.fn.dataTable.moment('DD-MM-YYYY');
-    $.fn.dataTable.moment('DD-MM-YYYY HH:mm');
     $.fn.dataTable.moment('DD/MM/YYYY');
+    $.fn.dataTable.moment('DD-MM-YYYY HH:mm');
+    $.fn.dataTable.moment('DD/MM/YYYY HH:mm');
 
     $.extend(true, $.fn.dataTable.defaults, {
         "oLanguage": {

@@ -1,0 +1,278 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'assets/plugins/dropify/css/dropify.min.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>Ticket ID: {{ ticket.id }}</h2>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i> zDesk</a>
+                            </li>
+                            <li class="breadcrumb-item">Ticket</li>
+                            <li class="breadcrumb-item active">Edit</li>
+                        </ul>
+                        <button class="btn btn-primary btn-icon mobile_menu" type="button">
+                            <i class="zmdi zmdi-sort-amount-desc"></i></button>
+                    </div>
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card mcard_4">
+                            <div class="body">
+                                <div class="img">
+                                    <img src="{% get_media_prefix %}{{ ticket.queue.image }}" class="rounded-circle" alt="{{ ticket.queue.title }}">
+                                </div>
+                                <div class="user">
+                                    <h5 class="mt-3 mb-1">{{ ticket.submitter_name }}</h5>
+                                    <small class="text-muted">{{ ticket.submitter_email }}</small>
+                                    <ul class="list-unstyled mt-3 d-flex">
+                                        <li class="mr-3"><strong>{{ ticket.submitter_phone }}</strong></li>
+                                    </ul>
+                                    <div class="progress-container progress-success">
+                                        <span class="progress-badge">Statestics</span>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
+                                                <span class="progress-value">90%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="list-unstyled social-links">
+                                    <li><a href="javascript:void(0);"><i class="zmdi zmdi-email"></i></a></li>
+                                    <li><a href="javascript:void(0);"><i class="zmdi zmdi-whatsapp"></i></a></li>
+                                    <li><a href="javascript:void(0);"><i class="zmdi zmdi-account"></i></a></li>
+                                    <li>
+                                        <a href="{% url 'ticket_detail' ticket.submitter_email ticket.secret_key %}"><i class="zmdi zmdi-link"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card mcard_1">
+                            <div class="header">
+                                <h2><strong>Ticket</strong> Info</h2>
+                            </div>
+                            <div class="body">
+                                <small class="text-muted">Status: </small>
+                                <p>
+                                    <span class="badge badge-warning btn-round" style="font-size: 1em; line-height: 1.5; padding: 3px 11px;">{{ ticket.get_status_display }}</span>
+                                </p>
+                                <hr>
+                                <small class="text-muted">Fila: </small>
+                                <p>
+                                    <span class="badge badge-primary" style="font-size: 1em; line-height: 1.5; padding: 3px 11px;">{{ ticket.queue.title }}</span>
+                                </p>
+                                <hr>
+                                <small class="text-muted">Criado em: </small>
+                                <p>{{ ticket.created }}</p>
+                                <hr>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <div>In Progress</div>
+                                        <div class="progress m-b-20">
+                                            <div class="progress-bar l-amber" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
+                                                <span class="sr-only">32% Complete</span></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr>
+                                <small class="text-muted">Team: </small>
+                                <ul class="list-unstyled team-info margin-0">
+                                    <li><img src="assets/images/xs/avatar7.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar8.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar9.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar2.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar3.jpg" alt="Avatar"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Ticket</strong> Info</h2>
+                            </div>
+                            <div class="body">
+                                <small class="text-muted">Fila: </small>
+                                <p>{{ ticket.queue.title }}</p>
+                                <hr>
+                                <small class="text-muted">Product: </small>
+                                <p>Lucid Side Menu Open OnClick</p>
+                                <hr>
+                                <small class="text-muted">Criado: </small>
+                                <p>{{ ticket.created }}</p>
+                                <hr>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <div>In Progress</div>
+                                        <div class="progress m-b-20">
+                                            <div class="progress-bar l-amber" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
+                                                <span class="sr-only">32% Complete</span></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr>
+                                <small class="text-muted">Team: </small>
+                                <ul class="list-unstyled team-info margin-0">
+                                    <li><img src="assets/images/xs/avatar7.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar8.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar9.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar2.jpg" alt="Avatar"></li>
+                                    <li><img src="assets/images/xs/avatar3.jpg" alt="Avatar"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Ticket</strong> Statestics</h2>
+                            </div>
+                            <div class="body">
+                                <div id="chart-donut" class="c3_chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card">
+                            <div class="body">
+                                <h5>Problemas</h5>
+                                <ul>
+                                    {% for problema in ticket.problems %}
+                                        <li>{{ problema }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <span>{% if outros %}{{ outros }}{% endif %}</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="header">
+                                <h2>Histórico do <strong>Ticket</strong></h2>
+                            </div>
+                            <div class="body mb-2">
+                                <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Adicionar comentário"></textarea>
+                                <button class="btn btn-primary btn-round"> Enviar <i class="zmdi zmdi-mail-send"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <ul class="cbp_tmtimeline">
+                            <li>
+                                <div class="cbp_tmicon"><i class="zmdi zmdi-account"></i></div>
+                                <div class="cbp_tmlabel empty">
+                                    <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Adicionar comentário"></textarea>
+                                    <button class="btn btn-primary btn-round"> Enviar
+                                        <i class="zmdi zmdi-mail-send"></i>
+                                    </button>
+                                    <a href="index.html" class="btn btn-primary waves-effect waves-light">SUBMIT</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cbp_tmicon bg-info"><i class="zmdi zmdi-label"></i></div>
+                                <div class="cbp_tmlabel">
+                                    <div class="cbp_tmtime">
+                                        <span>2019-11-04 03:45AM</span> <span>Today</span>
+                                    </div>
+                                    <h5><a href="javascript:void(0);">Art Ramadani</a>
+                                        <span>posted a status update</span>
+                                    </h5>
+                                    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and
+                                        offered
+                                        prepare how cordial two promise. Greatly who affixed suppose but enquire compact
+                                        prepare all put. Added forth chief trees but rooms think may.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cbp_tmicon bg-green"><i class="zmdi zmdi-case"></i></div>
+                                <div class="cbp_tmlabel">
+                                    <div class="cbp_tmtime">
+                                        <span>2019-11-04 03:45AM</span> <span>Today</span>
+                                    </div>
+                                    <h5><a href="javascript:void(0);">Job Meeting</a></h5>
+                                    <p>You have a meeting at <strong>Laborator Office</strong> Today.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cbp_tmicon bg-blush"><i class="zmdi zmdi-pin"></i></div>
+                                <div class="cbp_tmlabel">
+                                    <div class="cbp_tmtime">
+                                        <span>2019-11-04 03:45AM</span> <span>Today</span>
+                                    </div>
+
+                                    <h5><a href="javascript:void(0);">Arlind Nushi</a> <span>checked in at</span>
+                                        <a href="javascript:void(0);">New York</a></h5>
+                                    <blockquote>
+                                        <div class="blockquote">
+                                            "It is a long established fact that a reader will be distracted by the
+                                            readable
+                                            content of a page when looking at its layout."
+                                            <br><br>
+                                            <small>- Isabella</small>
+                                        </div>
+                                    </blockquote>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cbp_tmicon bg-orange"><i class="zmdi zmdi-camera"></i></div>
+                                <div class="cbp_tmlabel">
+                                    <div class="cbp_tmtime">
+                                        <span>2019-11-04 03:45AM</span> <span>Two weeks ago</span>
+                                    </div>
+
+                                    <h5><a href="javascript:void(0);">Eroll Maxhuni</a>
+                                        <span>uploaded 4 new photos to album</span> <a href="javascript:void(0);">Summer
+                                            Trip</a></h5>
+                                    <p>Pianoforte principles our unaffected not for astonished travelling are
+                                        particular.</p>
+
+                                    <div>
+                                        <img src="assets/images/image-gallery/1.jpg" alt="" class="img-fluid img-thumbnail w200"></a>
+                                        <img src="assets/images/image-gallery/2.jpg" alt="" class="img-fluid img-thumbnail w200"></a>
+                                        <img src="assets/images/image-gallery/3.jpg" alt="" class="img-fluid img-thumbnail w200"> </a>
+                                        <img src="assets/images/image-gallery/4.jpg" alt="" class="img-fluid img-thumbnail w200"> </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cbp_tmicon bg-green"><i class="zmdi zmdi-case"></i></div>
+                                <div class="cbp_tmlabel">
+                                    <div class="cbp_tmtime">
+                                        <span>2019-11-04 03:45AM</span> <span>Two weeks ago</span>
+                                    </div>
+                                    <h5><a href="javascript:void(0);">Job Meeting</a></h5>
+                                    <p>You have a meeting at <strong>Laborator Office</strong> Today.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cbp_tmicon bg-blush"><i class="zmdi zmdi-pin"></i></div>
+                                <div class="cbp_tmlabel">
+                                    <div class="cbp_tmtime">
+                                        <span>2019-11-04 03:45AM</span> <span>Month ago</span>
+                                    </div>
+                                    <h5><a href="javascript:void(0);">Arlind Nushi</a> <span>checked in at</span>
+                                        <a href="javascript:void(0);">Laborator</a></h5>
+                                    <blockquote>Great place, feeling like in home.</blockquote>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'assets/bundles/c3.bundle.js' %}"></script>
+    <script src="{% static 'assets/js/pages/ticket-page.js' %}"></script>
+{% endblock %}

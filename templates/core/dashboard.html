@@ -13,7 +13,8 @@
                 <div class="col-lg-7 col-md-6 col-sm-12">
                     <h2>Dashboard</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i> zDesk</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i> zDesk</a>
+                        </li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button">
@@ -103,64 +104,77 @@
                                 <table id="para-fazer" class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>WhatsApp</th>
+                                        <th>Data Chamado</th>
+                                        <th>Técnico pré diagnóstico</th>
+                                        <th>Prioridade</th>
+                                        <th>Problema</th>
+                                        <th>Papel</th>
+                                        <th>Técnico de campo</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>WhatsApp</th>
+                                        <th>Data Chamado</th>
+                                        <th>Técnico pré diagnóstico</th>
+                                        <th>Prioridade</th>
+                                        <th>Problema</th>
+                                        <th>Papel</th>
+                                        <th>Técnico de campo</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
+                                    {% for ticket in tickets %}
+                                        <tr>
+                                            <td>{{ ticket.pk }}</td>
+                                            <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a></td>
+                                            <td>{{ ticket.submitter_phone }}</td>
+                                            <td>{{ ticket.created|date:"d/m/Y H:m" }}</td>
+                                            <td>{{ ticket.tecnico_pre_diagnostico }}</td>
+                                            <td>{{ ticket.get_priority_display }}</td>
+{#                                            <td>{{ ticket.problems }}</td>#}
+                                            <td>
+                                                {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'{% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
+                                            </td>
+{#                                            <td>#}
+{#                                                {% for problema in ticket.problems %}#}
+{#                                                    {% if forloop.last %}#}
+{#                                                        • {{ problema }}#}
+{#                                                    {% else %}#}
+{#                                                        • {{ problema }}<br>#}
+{#                                                    {% endif %}#}
+{#                                                {% endfor %}#}
+{#                                            </td>#}
+                                            <td>{{ ticket.need_paper }}</td>
+                                            <td>{{ ticket.tecnico_de_campo }}</td>
+                                        </tr>
+                                    {% endfor %}
                                     <tr class="table-primary">
-                                        <td>Tiger Nixon</td>
+                                        <td>2</td>
                                         <td>System Architect</td>
                                         <td>Edinburgh</td>
+                                        <td>01/12/2018 12:33</td>
+                                        <td>61</td>
+                                        <td>$320,800</td>
                                         <td>61</td>
                                         <td>01/12/2018</td>
                                         <td>$320,800</td>
                                     </tr>
                                     <tr class="table-success">
-                                        <td>Garrett Winters</td>
+                                        <td>3</td>
                                         <td>Accountant</td>
                                         <td>Tokyo</td>
+                                        <td>25/12/2018 12:33</td>
                                         <td>63</td>
-                                        <td>25/12/2018</td>
                                         <td>$170,750</td>
-                                    </tr>
-                                    <tr class="table-info">
-                                        <td>Ashton Cox</td>
-                                        <td>Junior Technical Author</td>
-                                        <td>San Francisco</td>
-                                        <td>66</td>
-                                        <td>05/12/2019</td>
-                                        <td>$86,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td>Senior Javascript Developer</td>
-                                        <td>Edinburgh</td>
-                                        <td>22</td>
-                                        <td>10/01/2020</td>
-                                        <td>$433,060</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Airi Satou</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>33</td>
-                                        <td>01/02/2020</td>
-                                        <td>$162,700</td>
+                                        <td>61</td>
+                                        <td>01/12/2018</td>
+                                        <td>$320,800</td>
                                     </tr>
                                     </tbody>
                                 </table>
