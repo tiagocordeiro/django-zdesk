@@ -33,7 +33,7 @@
                         <div class="card mcard_4">
                             <div class="body">
                                 <div class="img">
-                                    <img src="{% get_media_prefix %}{{ ticket.queue.image }}" class="rounded-circle" alt="{{ ticket.queue.title }}">
+                                    <img src="{{ ticket.queue.image.url }}" class="rounded-circle" alt="{{ ticket.queue.title }}">
                                 </div>
                                 <div class="user">
                                     <h5 class="mt-3 mb-1">{{ ticket.submitter_name }}</h5>
