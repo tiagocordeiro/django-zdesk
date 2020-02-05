@@ -46,6 +46,25 @@ class Queue(Active, TimeStampedModel):
         verbose_name_plural = 'Queues'
 
 
+class QueueQuestion(Active, TimeStampedModel):
+    """
+    Um item na base de conhecimento, problemas e perguntas frequentes.
+    As perguntas vinculadas a uma Queue são usadas para gerar o fomulário de novo ticket.
+    """
+    queue = models.ForeignKey(Queue, on_delete=models.CASCADE, verbose_name='Queue')
+    order = models.PositiveIntegerField('ordem', default=0)
+    question = models.CharField('Question', max_length=256,
+                                help_text='Pergunta para formulário de abertura de tickets')
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        ordering = ('queue', 'order')
+        verbose_name = 'Question'
+        verbose_name_plural = 'Questions'
+
+
 def make_secret():
     return str(uuid.uuid4())
 
