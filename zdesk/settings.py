@@ -162,7 +162,7 @@ if CLOUDINARY_URL:  # pragma: no cover
         'cloudinary',
     ] + INSTALLED_APPS
 
-    COLLECTFAST_ENABLED = True
+    COLLECTFAST_ENABLED = False
 
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
     STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
