@@ -11,7 +11,7 @@
                 <div class="user-info">
                     <a class="image" href="{% url 'profile_edit' %}">
                         {% if user.userprofile.avatar %}
-                            <img src="{% get_media_prefix %}{{ user.userprofile.avatar }}" alt="User">
+                            <img src="{{ user.userprofile.avatar.url }}" alt="User">
                         {% else %}
                             <img src="{% static 'assets/images/profile_av.jpg' %}" alt="User">
                         {% endif %}

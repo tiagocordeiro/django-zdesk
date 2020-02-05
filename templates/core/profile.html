@@ -34,7 +34,7 @@
                             <div class="body">
                                 <a href="profile.html">
                                     {% if user.userprofile.avatar %}
-                                        <img src="{% get_media_prefix %}{{ user.userprofile.avatar }}" class="rounded-circle shadow " alt="Profile image">
+                                        <img src="{{ user.userprofile.avatar.url }}" class="rounded-circle shadow " alt="Profile image">
                                     {% else %}
                                         <img src="{% static 'assets/images/profile_av.jpg' %}" class="rounded-circle shadow " alt="Profile image">
                                     {% endif %}
