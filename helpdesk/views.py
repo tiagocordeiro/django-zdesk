@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import Queue, Ticket
+from .models import Queue, Ticket, QueueQuestion
 
 
 def ticket_crete(request):
@@ -12,8 +12,11 @@ def ticket_crete(request):
 
 def ticket_crete_step02(request):
     queue = request.POST['maquina']
+    queue = Queue.objects.get(title__exact=queue)
+    questions = QueueQuestion.objects.filter(queue=queue)
     context = {
         'queue': queue,
+        'questions': questions,
     }
     return render(request, 'helpdesk/create_ticket_step02.html', context)
 

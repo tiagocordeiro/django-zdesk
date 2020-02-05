@@ -56,30 +56,14 @@
                                 <input id="{{ queue }}" name="queue" type="hidden" value="{{ queue }}">
                                 <div class="row">
                                     <div class="col-md-12 checkbox-group options">
+
+                                        {% for question in questions %}
                                         <div class="checkbox">
-                                            <input name="problemas" class="form-control" value="Máquina não liga" id="procheck1" type="checkbox" required>
-                                            <label for="procheck1">Máquina não liga</label>
+                                            <input name="problemas" class="form-control" value="{{ question }}" id="{{ question }}" type="checkbox" required>
+                                            <label for="{{ question }}">{{ question }}</label>
                                         </div>
-                                        <div class="checkbox">
-                                            <input name="problemas" value="Corte não fecha o Ponto" id="procheck2" type="checkbox" required>
-                                            <label for="procheck2">Corte não fecha o Ponto</label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <input name="problemas" value="Não Consigo Fazer o Corte de Contorno" id="procheck3" type="checkbox" required>
-                                            <label for="procheck3">Não Consigo Fazer o Corte de Contorno</label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <input name="problemas" value="Cabeçote não se mexe" id="procheck4" type="checkbox" required>
-                                            <label for="procheck4">Cabeçote não se mexe</label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <input name="problemas" value="Contando com Medida Errada" id="procheck5" type="checkbox" required>
-                                            <label for="procheck5">Contando com Medida Errada</label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <input name="problemas" value="Computador não comunica com a máquina" id="procheck6" type="checkbox" required>
-                                            <label for="procheck6">Computador não comunica com a máquina</label>
-                                        </div>
+                                        {% endfor %}
+
                                         <div class="checkbox">
                                             <input name="problemas" value="Outros" id="procheckoutros" type="checkbox" onclick="showOtherField()" required>
                                             <label for="procheckoutros">Outros</label>
