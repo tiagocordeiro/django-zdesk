@@ -3,6 +3,7 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'assets/plugins/dropify/css/dropify.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap-select/css/bootstrap-select.css' %}"/>
 {% endblock extra_css %}
 
 {% block content %}
@@ -62,7 +63,7 @@
                         </div>
 
                         <div class="card mcard_1">
-                            <div class="header">
+                            <div class="header align-left">
                                 <h2><strong>Ticket</strong> Info</h2>
                             </div>
                             <div class="body">
@@ -79,74 +80,139 @@
                                 <small class="text-muted">Criado em: </small>
                                 <p>{{ ticket.created }}</p>
                                 <hr>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <div>In Progress</div>
-                                        <div class="progress m-b-20">
-                                            <div class="progress-bar l-amber" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
-                                                <span class="sr-only">32% Complete</span></div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <small class="text-muted">Pré diagnóstico:</small>
+                                        <ul class="list-unstyled team-info margin-0">
+                                            {% if ticket.tecnico_pre_diagnostico %}
+                                                <li>
+                                                    <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
+                                                    <small class="text-muted"> {{ ticket.tecnico_pre_diagnostico.username }} </small>
+                                                </li>
+                                            {% else %}
+                                                <li><img src="{% static 'assets/images/xs/avatar7.jpg' %}" alt="Avatar">
+                                                    <small class="text-muted"> Não definido </small>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <small class="text-muted">Técnico: </small>
+                                        <ul class="list-unstyled team-info margin-0">
+                                            {% if ticket.tecnico_de_campo %}
+                                                <li>
+                                                    <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
+                                                    <small class="text-muted"> {{ ticket.tecnico_de_campo.username }} </small>
+                                                </li>
+                                            {% else %}
+                                                <li><img src="{% static 'assets/images/xs/avatar7.jpg' %}" alt="Avatar">
+                                                    <small class="text-muted"> Não definido </small>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="header">
+                                <h2>Editar <strong>Ticket</strong></h2>
+                            </div>
+                            <div class="body mb-2">
+                                <form action="." method="post">
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_status">Status:</label>
+                                            {{ form.status }}
                                         </div>
-                                    </li>
-                                </ul>
-                                <hr>
-                                <small class="text-muted">Team: </small>
-                                <ul class="list-unstyled team-info margin-0">
-                                    <li><img src="assets/images/xs/avatar7.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar8.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar9.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar2.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar3.jpg" alt="Avatar"></li>
-                                </ul>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_priority">Prioridade:</label>
+                                            {{ form.priority }}
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_tecnico_pre_diagnostico">Pré diagnostico:</label>
+                                            {{ form.tecnico_pre_diagnostico }}
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_tecnico_de_campo">Técnico de campo:</label>
+                                            {{ form.tecnico_de_campo }}
+                                        </div>
+
+
+                                        <div class="col-md-12 checkbox-group my-3">
+                                            <div class="checkbox">
+                                                <input name="is_customer" id="id_is_customer" type="checkbox">
+                                                <label for="id_is_customer">Cliente</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_customer_code">Cliente:</label>
+                                            {{ form.customer_code }}
+                                        </div>
+
+                                        <div class="col-md-12 checkbox-group my-3">
+                                            <div class="checkbox">
+                                                <input name="need_paper" id="id_need_paper" type="checkbox">
+                                                <label for="id_need_paper">Papel</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label for="id_resolution_report">Relatório final</label>
+                                            {{ form.resolution_report }}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row my-3">
+                                        <div class="col-md-12 align-right">
+                                            <button class="btn btn-success my-3">Salvar <i class="zmdi zmdi-save"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Ticket</strong> Info</h2>
+                                <h2>Resolução do <strong>Ticket</strong></h2>
                             </div>
-                            <div class="body">
-                                <small class="text-muted">Fila: </small>
-                                <p>{{ ticket.queue.title }}</p>
-                                <hr>
-                                <small class="text-muted">Product: </small>
-                                <p>Lucid Side Menu Open OnClick</p>
-                                <hr>
-                                <small class="text-muted">Criado: </small>
-                                <p>{{ ticket.created }}</p>
-                                <hr>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <div>In Progress</div>
-                                        <div class="progress m-b-20">
-                                            <div class="progress-bar l-amber" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
-                                                <span class="sr-only">32% Complete</span></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <hr>
-                                <small class="text-muted">Team: </small>
-                                <ul class="list-unstyled team-info margin-0">
-                                    <li><img src="assets/images/xs/avatar7.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar8.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar9.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar2.jpg" alt="Avatar"></li>
-                                    <li><img src="assets/images/xs/avatar3.jpg" alt="Avatar"></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="header">
-                                <h2><strong>Ticket</strong> Statestics</h2>
-                            </div>
-                            <div class="body">
-                                <div id="chart-donut" class="c3_chart"></div>
+                            <div class="body mb-2">
+                                <textarea name="final-report" id="final-report" rows="4" class="form-control no-resize" placeholder="Solução" readonly></textarea>
                             </div>
                         </div>
                     </div>
+
+
                     <div class="col-lg-8 col-md-12">
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success" role="alert">
+                                    <div class="container">
+                                        <div class="alert-icon">
+                                            <i class="zmdi zmdi-thumb-up"></i>
+                                        </div>
+                                        {{ message|safe }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true"><i class="zmdi zmdi-close"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
                         <div class="card">
                             <div class="body">
-                                <h5>Problemas</h5>
+                                <h5>Problemas apresentados</h5>
                                 <ul>
                                     {% for problema in ticket.problems %}
                                         <li>{{ problema }}</li>
@@ -155,113 +221,37 @@
                                 <span>{% if outros %}{{ outros }}{% endif %}</span>
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="header">
                                 <h2>Histórico do <strong>Ticket</strong></h2>
-                            </div>
-                            <div class="body mb-2">
-                                <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Adicionar comentário"></textarea>
-                                <button class="btn btn-primary btn-round"> Enviar <i class="zmdi zmdi-mail-send"></i>
-                                </button>
                             </div>
                         </div>
                         <ul class="cbp_tmtimeline">
                             <li>
                                 <div class="cbp_tmicon"><i class="zmdi zmdi-account"></i></div>
-                                <div class="cbp_tmlabel empty">
+                                <div class="cbp_tmlabel empty align-right">
                                     <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Adicionar comentário"></textarea>
-                                    <button class="btn btn-primary btn-round"> Enviar
+                                    <button class="btn btn-primary btn-round mt-3"> Enviar
                                         <i class="zmdi zmdi-mail-send"></i>
                                     </button>
-                                    <a href="index.html" class="btn btn-primary waves-effect waves-light">SUBMIT</a>
                                 </div>
                             </li>
                             <li>
                                 <div class="cbp_tmicon bg-info"><i class="zmdi zmdi-label"></i></div>
                                 <div class="cbp_tmlabel">
                                     <div class="cbp_tmtime">
-                                        <span>2019-11-04 03:45AM</span> <span>Today</span>
+                                        <span>{{ ticket.created }}</span>
                                     </div>
-                                    <h5><a href="javascript:void(0);">Art Ramadani</a>
-                                        <span>posted a status update</span>
+                                    <h5><a href="javascript:void(0);">{{ ticket.submitter_name }}</a>
+                                        <span>criou um ticket</span>
                                     </h5>
-                                    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and
-                                        offered
-                                        prepare how cordial two promise. Greatly who affixed suppose but enquire compact
-                                        prepare all put. Added forth chief trees but rooms think may.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="cbp_tmicon bg-green"><i class="zmdi zmdi-case"></i></div>
-                                <div class="cbp_tmlabel">
-                                    <div class="cbp_tmtime">
-                                        <span>2019-11-04 03:45AM</span> <span>Today</span>
-                                    </div>
-                                    <h5><a href="javascript:void(0);">Job Meeting</a></h5>
-                                    <p>You have a meeting at <strong>Laborator Office</strong> Today.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="cbp_tmicon bg-blush"><i class="zmdi zmdi-pin"></i></div>
-                                <div class="cbp_tmlabel">
-                                    <div class="cbp_tmtime">
-                                        <span>2019-11-04 03:45AM</span> <span>Today</span>
-                                    </div>
-
-                                    <h5><a href="javascript:void(0);">Arlind Nushi</a> <span>checked in at</span>
-                                        <a href="javascript:void(0);">New York</a></h5>
-                                    <blockquote>
-                                        <div class="blockquote">
-                                            "It is a long established fact that a reader will be distracted by the
-                                            readable
-                                            content of a page when looking at its layout."
-                                            <br><br>
-                                            <small>- Isabella</small>
-                                        </div>
-                                    </blockquote>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="cbp_tmicon bg-orange"><i class="zmdi zmdi-camera"></i></div>
-                                <div class="cbp_tmlabel">
-                                    <div class="cbp_tmtime">
-                                        <span>2019-11-04 03:45AM</span> <span>Two weeks ago</span>
-                                    </div>
-
-                                    <h5><a href="javascript:void(0);">Eroll Maxhuni</a>
-                                        <span>uploaded 4 new photos to album</span> <a href="javascript:void(0);">Summer
-                                            Trip</a></h5>
-                                    <p>Pianoforte principles our unaffected not for astonished travelling are
-                                        particular.</p>
-
-                                    <div>
-                                        <img src="assets/images/image-gallery/1.jpg" alt="" class="img-fluid img-thumbnail w200"></a>
-                                        <img src="assets/images/image-gallery/2.jpg" alt="" class="img-fluid img-thumbnail w200"></a>
-                                        <img src="assets/images/image-gallery/3.jpg" alt="" class="img-fluid img-thumbnail w200"> </a>
-                                        <img src="assets/images/image-gallery/4.jpg" alt="" class="img-fluid img-thumbnail w200"> </a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="cbp_tmicon bg-green"><i class="zmdi zmdi-case"></i></div>
-                                <div class="cbp_tmlabel">
-                                    <div class="cbp_tmtime">
-                                        <span>2019-11-04 03:45AM</span> <span>Two weeks ago</span>
-                                    </div>
-                                    <h5><a href="javascript:void(0);">Job Meeting</a></h5>
-                                    <p>You have a meeting at <strong>Laborator Office</strong> Today.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="cbp_tmicon bg-blush"><i class="zmdi zmdi-pin"></i></div>
-                                <div class="cbp_tmlabel">
-                                    <div class="cbp_tmtime">
-                                        <span>2019-11-04 03:45AM</span> <span>Month ago</span>
-                                    </div>
-                                    <h5><a href="javascript:void(0);">Arlind Nushi</a> <span>checked in at</span>
-                                        <a href="javascript:void(0);">Laborator</a></h5>
-                                    <blockquote>Great place, feeling like in home.</blockquote>
+                                    <p>Um novo chamado foi criado por {{ ticket.submitter_name }} para suporte
+                                        com {{ ticket.queue.title }}</p>
+                                    <ul>
+                                        {% for problema in ticket.problems %}
+                                            <li>{{ problema }}</li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </li>
                         </ul>
@@ -270,9 +260,4 @@
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block extra_js %}
-    <script src="{% static 'assets/bundles/c3.bundle.js' %}"></script>
-    <script src="{% static 'assets/js/pages/ticket-page.js' %}"></script>
 {% endblock %}

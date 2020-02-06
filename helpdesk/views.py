@@ -1,7 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
 
+from .forms import TicketManageForm
 from .models import Queue, Ticket, QueueQuestion
 
 
@@ -67,5 +68,25 @@ def ticket_detail(request, email, secret):
 
 @login_required
 def ticket_edit(request, pk):
-    ticket = Ticket.objects.get(pk=pk)
-    return render(request, 'helpdesk/ticket_edit.html', {'ticket': ticket})
+    ticket = get_object_or_404(Ticket, pk=pk)
+
+    if request.method == 'POST':
+        form = TicketManageForm(request.POST, request.FILES, instance=ticket)
+
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, "O ticket foi atualizado")
+                return redirect(ticket_edit, pk=pk)
+
+        except Exception as e:
+            messages.warning(request, 'Ocorreu um erro ao atualizar: {}'.format(e))
+
+    else:
+        form = TicketManageForm(instance=ticket)
+
+    context = {
+        'ticket': ticket,
+        'form': form,
+    }
+    return render(request, 'helpdesk/ticket_edit.html', context)

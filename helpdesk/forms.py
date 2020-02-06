@@ -1,13 +1,27 @@
-from django import forms
+from django.forms import ModelForm, Select, CheckboxInput, Textarea, TextInput
+
+from .models import Ticket
 
 
-class PublicTicketForm(forms.Form):
-    """
-    Ticket Form creation for all users (public-facing).
-    """
-    submitter_email = forms.EmailField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'email'}),
-        required=True,
-        label=_('Your E-Mail Address'),
-        help_text=_('We will e-mail you when your ticket is updated.'),
-    )
+class TicketManageForm(ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['status',
+                  'priority',
+                  'tecnico_pre_diagnostico',
+                  'tecnico_de_campo',
+                  'is_customer',
+                  'customer_code',
+                  'need_paper',
+                  'resolution_report', ]
+
+        widgets = {
+            'status': Select(attrs={'class': 'form-control', 'placeholder': 'Status'}),
+            'priority': Select(attrs={'class': 'form-control', 'placeholder': 'Prioridade'}),
+            'tecnico_pre_diagnostico': Select(attrs={'class': 'form-control', 'placeholder': 'Pré diagnostico'}),
+            'tecnico_de_campo': Select(attrs={'class': 'form-control', 'placeholder': 'Tecnico de campo'}),
+            'is_customer': CheckboxInput(attrs={'class': 'form-control'}),
+            'customer_code': TextInput(attrs={'class': 'form-control'}),
+            'need_paper': CheckboxInput(attrs={'class': 'form-control'}),
+            'resolution_report': Textarea(attrs={'class': 'form-control'})
+        }
