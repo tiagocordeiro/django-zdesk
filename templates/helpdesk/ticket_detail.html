@@ -70,17 +70,31 @@
                                 <div class="col-md-6 col-sm-12">
                                     <small class="text-muted">Pré diagnóstico:</small>
                                     <ul class="list-unstyled team-info margin-0">
-                                        <li><img src="{% static 'assets/images/xs/avatar7.jpg' %}" alt="Avatar">
-                                            <small class="text-muted"> Gustavo </small>
-                                        </li>
+                                        {% if ticket.tecnico_pre_diagnostico %}
+                                            <li>
+                                                <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
+                                                <small class="text-muted"> {{ ticket.tecnico_pre_diagnostico.username }} </small>
+                                            </li>
+                                        {% else %}
+                                            <li><img src="{% static 'assets/images/xs/avatar7.jpg' %}" alt="Avatar">
+                                                <small class="text-muted"> Não definido </small>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
                                     <small class="text-muted">Técnico: </small>
                                     <ul class="list-unstyled team-info margin-0">
-                                        <li><img src="{% static 'assets/images/xs/avatar7.jpg' %}" alt="Avatar">
-                                            <small class="text-muted"> Alison </small>
-                                        </li>
+                                        {% if ticket.tecnico_de_campo %}
+                                            <li>
+                                                <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
+                                                <small class="text-muted"> {{ ticket.tecnico_de_campo.username }} </small>
+                                            </li>
+                                        {% else %}
+                                            <li><img src="{% static 'assets/images/xs/avatar7.jpg' %}" alt="Avatar">
+                                                <small class="text-muted"> Não definido </small>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
@@ -118,7 +132,8 @@
                             <div class="cbp_tmicon"><i class="zmdi zmdi-account"></i></div>
                             <div class="cbp_tmlabel empty">
                                 <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Adicionar comentário"></textarea>
-                                <button class="btn btn-primary btn-round mt-3"> Enviar <i class="zmdi zmdi-mail-send"></i>
+                                <button class="btn btn-primary btn-round mt-3"> Enviar
+                                    <i class="zmdi zmdi-mail-send"></i>
                                 </button>
                             </div>
                         </li>
