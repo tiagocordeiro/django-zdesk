@@ -1,7 +1,7 @@
 import re
-import uuid
 
 from django.test import TestCase, RequestFactory, Client
+
 from helpdesk.models import Queue, QueueQuestion, make_secret
 
 
@@ -36,13 +36,10 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(len(questions), 4)
         self.assertEqual(questions[0].__str__(), 'Máquina não liga')
 
-    def test_make_secret_for_non_logged_user(self):
+    def test_make_secret_for_non_logged_user_view(self):
         secret = make_secret()
 
-        uuid_valid_format = re.compile('^[a-z0-9\-]{36}$')
-
-        print(len(secret))
-        print(uuid_valid_format.match(secret))
+        uuid_valid_format = re.compile(r'^[a-z0-9\-]{36}$')
 
         self.assertIsNotNone(uuid_valid_format.match(secret))
         self.assertEqual(len(secret), 36)
