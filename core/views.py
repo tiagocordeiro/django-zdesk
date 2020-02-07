@@ -10,9 +10,20 @@ from helpdesk.models import Ticket
 
 @login_required
 def dashboard(request):
-    tickets = Ticket.objects.all()
+    tickets = Ticket.objects.all().exclude(status__in=[3, 4])
+    tickets_resolved = Ticket.objects.filter(status=3)
+    tickets_closed = Ticket.objects.filter(status=4)
+    tickets_all = Ticket.objects.all()
+    count_tickets_all = len(tickets_all)
+    count_tickets_todo = len(tickets)
+    count_tickets_resolved = len(tickets_resolved)
+    count_tickets_closed = len(tickets_closed)
     context = {
         'tickets': tickets,
+        'count_tickets_all': count_tickets_all,
+        'count_tickets_todo': count_tickets_todo,
+        'count_tickets_resolved': count_tickets_resolved,
+        'count_tickets_closed': count_tickets_closed,
     }
     return render(request, 'core/dashboard.html', context)
 

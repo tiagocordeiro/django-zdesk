@@ -26,9 +26,9 @@
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-ticket-star"></i><span>Tickets</span></a>
                 <ul class="ml-menu">
                     <li><a href="javascript:void(0);">Adicionar</a></li>
-                    <li><a href="javascript:void(0);">Todos</a></li>
-                    <li><a href="javascript:void(0);">Para fazer</a></li>
-                    <li><a href="javascript:void(0);">Fazendo</a></li>
+                    <li><a href="{% url 'ticket_list_all' %}">Todos</a></li>
+                    <li><a href="{% url 'ticket_list_todo' %}">Para fazer</a></li>
+                    <li><a href="{% url 'ticket_list_done' %}">Feitos</a></li>
                 </ul>
             </li>
             <li><a href="{% url 'profile_edit' %}"><i class="zmdi zmdi-account"></i><span>Meu Perfil</span></a></li>
