@@ -2,7 +2,7 @@ import base64  # for decoding base64 image
 import tempfile  # for setting up tempdir for media
 from io import BytesIO
 
-from django.contrib.auth.models import AnonymousUser, User, Group
+from django.contrib.auth.models import AnonymousUser, User
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import RequestFactory, TestCase, Client, override_settings
 from django.urls import reverse
