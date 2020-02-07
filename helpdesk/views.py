@@ -90,3 +90,39 @@ def ticket_edit(request, pk):
         'form': form,
     }
     return render(request, 'helpdesk/ticket_edit.html', context)
+
+
+@login_required
+def ticket_list_all(request):
+    tickets = Ticket.objects.all()
+    context = {
+        'tickets': tickets,
+        'title': 'Todos os tickets',
+        'table_title': 'Todos os<strong> Tickets</strong>',
+        'breadcrumb': 'Todos',
+    }
+    return render(request, 'helpdesk/ticket_list.html', context)
+
+
+@login_required
+def ticket_list_todo(request):
+    tickets = Ticket.objects.all().exclude(status__in=[3, 4])
+    context = {
+        'tickets': tickets,
+        'title': 'Tickets para fazer',
+        'table_title': '<strong>Tickets </strong>para fazer',
+        'breadcrumb': 'Para fazer',
+    }
+    return render(request, 'helpdesk/ticket_list.html', context)
+
+
+@login_required
+def ticket_list_done(request):
+    tickets = Ticket.objects.filter(status__in=[3, 4])
+    context = {
+        'tickets': tickets,
+        'title': 'Tickets feitos',
+        'table_title': '<strong>Tickets </strong>feitos',
+        'breadcrumb': 'Feitos',
+    }
+    return render(request, 'helpdesk/ticket_list.html', context)
