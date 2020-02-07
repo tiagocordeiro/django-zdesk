@@ -32,9 +32,11 @@ class HelpdeskTestCase(TestCase):
 
     def test_retorno_queue_question_title(self):
         questions = QueueQuestion.objects.filter(queue=self.queue_cnc)
+        questions_expected = ['Máquina não liga', 'A Máquina não se movimenta',
+                              'Alarme no Software', 'Spindle não Gira']
 
         self.assertEqual(len(questions), 4)
-        self.assertEqual(questions[0].__str__(), 'Máquina não liga')
+        self.assertIn(questions[0].__str__(), questions_expected)
 
     def test_make_secret_for_non_logged_user_view(self):
         secret = make_secret()
