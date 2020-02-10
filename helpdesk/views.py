@@ -109,6 +109,7 @@ def ticket_add(request):
 @login_required
 def ticket_edit(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
+    comments = ticket.ticketupdate_set.filter()
 
     if request.method == 'POST':
         form = TicketManageForm(request.POST, request.FILES, instance=ticket)
@@ -128,6 +129,7 @@ def ticket_edit(request, pk):
     context = {
         'ticket': ticket,
         'form': form,
+        'comments': comments,
     }
     return render(request, 'helpdesk/ticket_edit.html', context)
 
