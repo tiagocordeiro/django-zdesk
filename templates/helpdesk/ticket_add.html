@@ -1,0 +1,244 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'assets/plugins/dropify/css/dropify.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap-select/css/bootstrap-select.css' %}"/>
+{% endblock extra_css %}
+
+{% block content %}
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>Novo Ticket</h2>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i>zDesk</a>
+                            </li>
+                            <li class="breadcrumb-item">Tickets</li>
+                            <li class="breadcrumb-item active">Novo</li>
+                        </ul>
+                        <button class="btn btn-primary btn-icon mobile_menu" type="button">
+                            <i class="zmdi zmdi-sort-amount-desc"></i></button>
+                    </div>
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+
+                    {% if form.errors %}
+                        {{ form.errors }}
+                    {% endif %}
+
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Novo<strong> Ticket</strong></h2>
+                            </div>
+                            <div class="body">
+                                <form action="." method="post" id="newTicket" data-questions-url="{% url 'load_questions' %}">
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_status">Queue:</label>
+                                            {{ form.queue }}
+                                        </div>
+                                        <div class="col-md-12 checkbox-group options">
+
+                                            <div id="questions"></div>
+
+
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Especifique o problema" style="display: none;"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_status">Status:</label>
+                                            {{ form.status }}
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_priority">Prioridade:</label>
+                                            {{ form.priority }}
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_tecnico_pre_diagnostico">Pré diagnostico:</label>
+                                            {{ form.tecnico_pre_diagnostico }}
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_tecnico_de_campo">Técnico de campo:</label>
+                                            {{ form.tecnico_de_campo }}
+                                        </div>
+
+
+                                        <div class="col-md-12 checkbox-group my-3">
+                                            <div class="checkbox">
+                                                {{ form.is_customer }}
+                                                <label for="id_is_customer">Cliente</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_customer_code">Cliente:</label>
+                                            {{ form.customer_code }}
+                                        </div>
+
+                                        <div class="col-md-12 checkbox-group my-3">
+                                            <div class="checkbox">
+                                                {{ form.need_paper }}
+                                                <label for="id_need_paper">Papel</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label for="id_submitter_name">Cliente:</label>
+                                                {{ form.submitter_name }}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label for="id_submitter_company">Empresa:</label>
+                                                <input id="id_submitter_company" name="submitter_company" type="text" class="form-control" placeholder="Nome da empresa">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="input-group masked-input mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                                                </div>
+                                                <input id="id_submitter_email" name="submitter_email" type="email" class="form-control email" placeholder="Email cliente" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="input-group masked-input mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="zmdi zmdi-smartphone"></i></span>
+                                                </div>
+                                                <input id="id_submitter_phone" name="submitter_phone" type="text" class="form-control mobile-phone-number" placeholder="Whats / Celular" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 align-right">
+                                            <button id="save-ticket" class="btn btn-success my-3">Salvar
+                                                <i class="zmdi zmdi-save"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card mcard_3">
+                            <div class="body">
+                                <a href="profile.html">
+                                    {% if user.userprofile.avatar %}
+                                        <img src="{{ user.userprofile.avatar.url }}" class="rounded-circle shadow " alt="Profile image">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/profile_av.jpg' %}" class="rounded-circle shadow " alt="Profile image">
+                                    {% endif %}
+                                </a>
+                                <h4 class="m-t-10">{{ user }}</h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="social-links list-unstyled">
+                                            <li>
+                                                <a title="facebook" href="javascript:void(0);"><i class="zmdi zmdi-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a title="twitter" href="javascript:void(0);"><i class="zmdi zmdi-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a title="instagram" href="javascript:void(0);"><i class="zmdi zmdi-instagram"></i></a>
+                                            </li>
+                                        </ul>
+                                        <p class="text-muted">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
+                                        <small class="text-muted">Email address: </small>
+                                        <p>{{ user.email }}</p>
+                                        <hr>
+                                        <small class="text-muted">Phone: </small>
+                                        <p>+ 202-555-0191</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-notify/bootstrap-notify.js' %}"></script>
+    <!-- Bootstrap Notify Plugin Js -->
+
+    <script>
+        function showOtherField() {
+            const checkBox = document.getElementById("procheckoutros");
+            const otherfield = document.getElementById("outro-problema");
+            if (checkBox.checked == true) {
+                otherfield.style.display = "block";
+                otherfield.setAttribute("required", "");
+                otherfield.setAttribute("name", "outros problemas");
+            } else {
+                otherfield.style.display = "none";
+                otherfield.removeAttribute("required");
+                otherfield.removeAttribute("name");
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#id_submitter_phone').inputmask('(99) 9999[9]-9999');
+        });
+    </script>
+    <script>
+        $("#id_queue").change(function () {
+            let url = $("#newTicket").attr("data-questions-url");   // get the url of the `load_questions` view
+            let queueId = $(this).val();                            // get the selected queue ID from the HTML input
+
+            $.ajax({                        // initialize an AJAX request
+                url: url,                   // set the url of the request (= localhost:8000/tickets/ajax/load-questions/)
+                data: {
+                    'queue': queueId        // add the queue id to the GET parameters
+                },
+                success: function (data) {      // `data` is the return of the `load_questions` view function
+                    $("#questions").html(data); // replace the contents of the questions div with the data that came from the server
+                }
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('#save-ticket').on('click', function () {
+                let isChecked = $('input:checkbox').is(':checked');
+
+                if (isChecked === false) {
+                    $.notify({
+                        title: '<strong>Atenção!</strong>',
+                        message: 'Você precisa selecionar ao menos um item da lista'
+                    }, {
+                        allow_dismiss: false,
+                        type: 'warning'
+                    });
+                } else {
+
+                }
+            });
+        });
+    </script>
+{% endblock %}

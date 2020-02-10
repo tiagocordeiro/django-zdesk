@@ -1,0 +1,12 @@
+<ul id="id_problems" class="form-control">
+    {% for question in questions %}
+        <div class="checkbox">
+            <input name="problems" class="form-control" value="{{ question }}" id="{{ question }}" type="checkbox">
+            <label for="{{ question }}">{{ question }}</label>
+        </div>
+    {% endfor %}
+</ul>
+<div class="checkbox">
+    <input name="problems" value="Outros" id="procheckoutros" type="checkbox" onclick="showOtherField()">
+    <label for="procheckoutros">Outros</label>
+</div>

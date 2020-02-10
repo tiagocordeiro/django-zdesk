@@ -143,11 +143,18 @@
                                 <div class="cbp_tmtime">
                                     <span>{{ ticket.created }}</span>
                                 </div>
-                                <h5><a href="javascript:void(0);">{{ ticket.submitter_name }}</a>
-                                    <span>criou um ticket</span>
+                                <h5>
+                                    {% if ticket.assigned_to %}
+                                        <a href="javascript:void(0);">{{ ticket.assigned_to }}</a>
+                                        <span>criou um ticket para {{ ticket.submitter_name }}</span>
+                                    {% else %}
+                                        <a href="javascript:void(0);">{{ ticket.submitter_name }}</a>
+                                        <span>criou um ticket</span>
+                                    {% endif %}
+                                    </a>
                                 </h5>
-                                <p>Um novo chamado foi criado por {{ ticket.submitter_name }} para suporte
-                                    com {{ ticket.queue.title }}</p>
+                                <p>Um novo chamado foi criado para suporte de {{ ticket.queue.title }}</p>
+                                <small class="text-muted">Problemas:</small>
                                 <ul>
                                     {% for problema in ticket.problems %}
                                         <li>{{ problema }}</li>
