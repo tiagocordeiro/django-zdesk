@@ -230,12 +230,34 @@
                             <li>
                                 <div class="cbp_tmicon"><i class="zmdi zmdi-account"></i></div>
                                 <div class="cbp_tmlabel empty align-right">
-                                    <textarea name="outro-problema" id="outro-problema" rows="4" class="form-control no-resize" placeholder="Adicionar comentário"></textarea>
-                                    <button class="btn btn-primary btn-round mt-3"> Enviar
-                                        <i class="zmdi zmdi-mail-send"></i>
-                                    </button>
+                                    <form action="{% url 'ticket_comment' pk=ticket.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <input hidden name="update_ticket_pk" value="{{ ticket.pk }}">
+                                        <input hidden name="update_user" value="{{ request.user }}">
+                                        <input hidden name="update_title" value="Comentou">
+                                        <textarea name="update_comment" id="update_comment" rows="4" class="form-control no-resize" placeholder="Adicionar comentário" required></textarea>
+                                        <button class="btn btn-primary btn-round mt-3"> Enviar
+                                            <i class="zmdi zmdi-mail-send"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
+
+                            {% if comments %}
+                                {% for comment in comments %}
+                                    <li>
+                                        <div class="cbp_tmicon bg-info"><i class="zmdi zmdi-label"></i></div>
+                                        <div class="cbp_tmlabel">
+                                            <div class="cbp_tmtime">
+                                                <span>{{ comment.created }}</span>
+                                            </div>
+                                            <h5><a href="javascript:void(0);">{{ comment.user }}</a> <span>{{ comment.title }}</span></h5>
+                                            <p>{{ comment.comment }}</p>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+
                             <li>
                                 <div class="cbp_tmicon bg-info"><i class="zmdi zmdi-label"></i></div>
                                 <div class="cbp_tmlabel">

@@ -163,3 +163,18 @@ class Ticket(Active, TimeStampedModel):
     secret_key = models.CharField("Secret key needed for viewing/editing ticket by non-logged in users",
                                   max_length=36,
                                   default=make_secret)
+
+
+class TicketUpdate(Active, TimeStampedModel):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, verbose_name='Ticket')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name='user', blank=True, null=True,
+                             verbose_name='Usuário')
+    title = models.CharField('Título', max_length=100, blank=True, null=True)
+    comment = models.TextField('Comentário', blank=True, null=True)
+    public = models.BooleanField('Público', blank=True, null=True, default=False)
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = 'Update'
+        verbose_name_plural = 'Updates'
