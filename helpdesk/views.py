@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from .forms import TicketManageForm, TicketForm
-from .models import Queue, Ticket, QueueQuestion
+from .models import Queue, Ticket, QueueQuestion, TicketUpdate
 
 
 def ticket_crete(request):
@@ -165,3 +166,15 @@ def ticket_list_done(request):
         'breadcrumb': 'Feitos',
     }
     return render(request, 'helpdesk/ticket_list.html', context)
+
+
+@login_required
+def ticket_comment(request, **kwargs):
+    ticket = Ticket.objects.get(pk=request.POST.get('update_ticket_pk'))
+    user = request.user
+    title = request.POST.get('update_title')
+    comment = request.POST.get('update_comment')
+    TicketUpdate.objects.create(ticket=ticket, user=user, title=title, comment=comment, public=False)
+
+    messages.success(request, "Novo comentário adicionado")
+    return redirect(reverse('ticket_edit', args={ticket.pk}))
