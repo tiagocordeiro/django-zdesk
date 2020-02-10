@@ -32,3 +32,6 @@ mock==4.0.1
 requests==2.22.0
 six==1.14.0
 urllib3==1.25.8
+
+# Sentry
+sentry-sdk==0.14.1
