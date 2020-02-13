@@ -1,4 +1,5 @@
-from django.forms import ModelForm, Select, CheckboxInput, Textarea, TextInput, EmailInput, CheckboxSelectMultiple
+from django.forms import ModelForm, Select, CheckboxInput, Textarea, TextInput, EmailInput, CheckboxSelectMultiple, \
+    NumberInput
 
 from .models import Ticket
 
@@ -13,6 +14,7 @@ class TicketManageForm(ModelForm):
                   'is_customer',
                   'customer_code',
                   'order',
+                  'losses',
                   'need_paper',
                   'resolution_report', ]
 
@@ -24,6 +26,7 @@ class TicketManageForm(ModelForm):
             'is_customer': CheckboxInput(attrs={'class': 'form-control'}),
             'customer_code': TextInput(attrs={'class': 'form-control'}),
             'order': TextInput(attrs={'class': 'form-control'}),
+            'losses': NumberInput(attrs={'class': 'form-control'}),
             'need_paper': CheckboxInput(attrs={'class': 'form-control'}),
             'resolution_report': Textarea(attrs={'class': 'form-control'})
         }

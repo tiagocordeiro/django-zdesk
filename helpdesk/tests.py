@@ -1,5 +1,6 @@
 import base64  # for decoding base64 image
 import re
+from decimal import Decimal
 from io import BytesIO
 
 from django.contrib.auth.models import AnonymousUser, User, Group
@@ -8,6 +9,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import TestCase, RequestFactory, Client
 from django.urls import reverse
 
+from core.views import dashboard
 from helpdesk.models import Queue, QueueQuestion, make_secret, Ticket
 from .forms import TicketForm
 from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit
@@ -251,6 +253,7 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(ticket.is_customer, False)
         self.assertEqual(ticket.customer_code, None)
         self.assertEqual(ticket.order, None)
+        self.assertEqual(ticket.losses, 0)
 
         new_ticket_data = {
             'submitter_name': ticket.submitter_name,
@@ -264,6 +267,7 @@ class HelpdeskTestCase(TestCase):
             'is_customer': True,
             'customer_code': 666,
             'order': 999,
+            'losses': 1904.93,
             'resolution_report': '',
         }
 
@@ -282,3 +286,10 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(ticket.is_customer, True)
         self.assertEqual(ticket.customer_code, '666')
         self.assertEqual(ticket.order, '999')
+        self.assertEqual(ticket.losses, Decimal('1904.9300000000'))
+
+        request = self.factory.get('/')
+        request.user = self.user_staff
+
+        response = dashboard(request)
+        self.assertContains(response, 'R$ 1.904,93')

@@ -58,6 +58,13 @@ class DashboardViewTest(TestCase):
         response = dashboard(request)
         self.assertEqual(response.status_code, 200)
 
+    def test_dashboard_content(self):
+        request = self.factory.get('/')
+        request.user = self.user_admin
+
+        response = dashboard(request)
+        self.assertContains(response, 'Total de prejuízo')
+
 
 class ProfileUpdateViewTest(TestCase):
     def setUp(self):
