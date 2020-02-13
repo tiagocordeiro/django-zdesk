@@ -20,7 +20,10 @@ def dashboard(request):
     count_tickets_closed = len(tickets_closed)
     total_losses = 0
     for ticket in tickets_all:
-        if ticket.losses:
+        try:
+            total_losses = ticket.losses + total_losses
+        except TypeError:
+            ticket.losses = 0
             total_losses = ticket.losses + total_losses
 
     context = {
