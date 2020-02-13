@@ -12,6 +12,7 @@ class TicketManageForm(ModelForm):
                   'tecnico_de_campo',
                   'is_customer',
                   'customer_code',
+                  'order',
                   'need_paper',
                   'resolution_report', ]
 
@@ -22,6 +23,7 @@ class TicketManageForm(ModelForm):
             'tecnico_de_campo': Select(attrs={'class': 'form-control', 'placeholder': 'Tecnico de campo'}),
             'is_customer': CheckboxInput(attrs={'class': 'form-control'}),
             'customer_code': TextInput(attrs={'class': 'form-control'}),
+            'order': TextInput(attrs={'class': 'form-control'}),
             'need_paper': CheckboxInput(attrs={'class': 'form-control'}),
             'resolution_report': Textarea(attrs={'class': 'form-control'})
         }
@@ -42,6 +44,7 @@ class TicketForm(ModelForm):
                   'tecnico_de_campo',
                   'is_customer',
                   'customer_code',
+                  'order',
                   'need_paper',
                   'resolution_report', ]
 
@@ -58,6 +61,7 @@ class TicketForm(ModelForm):
             'tecnico_de_campo': Select(attrs={'class': 'form-control', 'placeholder': 'Tecnico de campo'}),
             'is_customer': CheckboxInput(attrs={'class': 'form-control'}),
             'customer_code': TextInput(attrs={'class': 'form-control'}),
+            'order': TextInput(attrs={'class': 'form-control'}),
             'need_paper': CheckboxInput(attrs={'class': 'form-control'}),
             'resolution_report': Textarea(attrs={'class': 'form-control'})
         }

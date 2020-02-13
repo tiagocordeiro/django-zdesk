@@ -3,13 +3,14 @@ import re
 from io import BytesIO
 
 from django.contrib.auth.models import AnonymousUser, User, Group
+from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import TestCase, RequestFactory, Client
 from django.urls import reverse
 
 from helpdesk.models import Queue, QueueQuestion, make_secret, Ticket
 from .forms import TicketForm
-from .views import ticket_crete, ticket_detail, ticket_add
+from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit
 
 
 class HelpdeskTestCase(TestCase):
@@ -243,3 +244,41 @@ class HelpdeskTestCase(TestCase):
 
         tickets = Ticket.objects.all()
         self.assertEqual(len(tickets), 3)
+
+    def test_ticket_update_by_staff(self):
+        ticket = self.ticket_non_customer
+        self.assertEqual(ticket.submitter_name, 'Non Customer')
+        self.assertEqual(ticket.is_customer, False)
+        self.assertEqual(ticket.customer_code, None)
+        self.assertEqual(ticket.order, None)
+
+        new_ticket_data = {
+            'submitter_name': ticket.submitter_name,
+            'submitter_company': ticket.submitter_company,
+            'submitter_phone': ticket.submitter_phone,
+            'submitter_email': ticket.submitter_email,
+            'status': 1,
+            'priority': 4,
+            'tecnico_pre_diagnostico': self.user_staff.pk,
+            'tecnico_de_campo': self.user_staff.pk,
+            'is_customer': True,
+            'customer_code': 666,
+            'order': 999,
+            'resolution_report': '',
+        }
+
+        request = self.factory.post(reverse('ticket_edit', kwargs={'pk': ticket.pk}), new_ticket_data)
+        request.user = self.user_staff
+
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
+        response = ticket_edit(request, pk=ticket.pk)
+        ticket.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(ticket.submitter_name, 'Non Customer')
+        self.assertEqual(ticket.is_customer, True)
+        self.assertEqual(ticket.customer_code, '666')
+        self.assertEqual(ticket.order, '999')

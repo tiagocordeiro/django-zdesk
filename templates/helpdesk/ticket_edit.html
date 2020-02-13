@@ -144,24 +144,30 @@
                                         </div>
 
 
-                                        <div class="col-md-12 checkbox-group my-3">
+                                        <div class="col-md-6 col-sm-12 checkbox-group my-3">
                                             <div class="checkbox">
                                                 {{ form.is_customer }}
                                                 <label for="id_is_customer">Cliente</label>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 mb-3">
-                                            <label for="id_customer_code">Cliente:</label>
-                                            {{ form.customer_code }}
-                                        </div>
-
-                                        <div class="col-md-12 checkbox-group my-3">
+                                        <div class="col-md-6 col-sm-12 checkbox-group my-3">
                                             <div class="checkbox">
                                                 {{ form.need_paper }}
                                                 <label for="id_need_paper">Papel</label>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-6 col-sm-12 mb-3">
+                                            <label for="id_customer_code">Cliente:</label>
+                                            {{ form.customer_code }}
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-12 mb-3">
+                                            <label for="id_customer_code">Pedido:</label>
+                                            {{ form.order }}
+                                        </div>
+
 
                                         <div class="col-md-12">
                                             <label for="id_resolution_report">Relatório final</label>
