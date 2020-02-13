@@ -18,12 +18,18 @@ def dashboard(request):
     count_tickets_todo = len(tickets)
     count_tickets_resolved = len(tickets_resolved)
     count_tickets_closed = len(tickets_closed)
+    total_losses = 0
+    for ticket in tickets_all:
+        if ticket.losses:
+            total_losses = ticket.losses + total_losses
+
     context = {
         'tickets': tickets,
         'count_tickets_all': count_tickets_all,
         'count_tickets_todo': count_tickets_todo,
         'count_tickets_resolved': count_tickets_resolved,
         'count_tickets_closed': count_tickets_closed,
+        'total_losses': total_losses
     }
     return render(request, 'core/dashboard.html', context)
 

@@ -157,6 +157,8 @@ class Ticket(Active, TimeStampedModel):
 
     order = models.CharField('Código do pedido', max_length=10, blank=True, null=True)
 
+    losses = models.DecimalField('Prejuízo', max_digits=16, decimal_places=10, blank=True, default=0)
+
     need_paper = models.BooleanField('Tem papel', default=False)
 
     resolution_report = models.TextField('Relatório final', blank=True, null=True,

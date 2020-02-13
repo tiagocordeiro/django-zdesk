@@ -168,6 +168,15 @@
                                             {{ form.order }}
                                         </div>
 
+                                        <div class="col-md-12 mb-3">
+                                            <label for="id_losses">Prejuízo:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">₨</span>
+                                                </div>
+                                                {{ form.losses }}
+                                            </div>
+                                        </div>
 
                                         <div class="col-md-12">
                                             <label for="id_resolution_report">Relatório final</label>
@@ -257,7 +266,8 @@
                                             <div class="cbp_tmtime">
                                                 <span>{{ comment.created }}</span>
                                             </div>
-                                            <h5><a href="javascript:void(0);">{{ comment.user }}</a> <span>{{ comment.title }}</span></h5>
+                                            <h5><a href="javascript:void(0);">{{ comment.user }}</a>
+                                                <span>{{ comment.title }}</span></h5>
                                             <p>{{ comment.comment }}</p>
                                         </div>
                                     </li>
