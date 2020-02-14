@@ -104,9 +104,11 @@ class Ticket(Active, TimeStampedModel):
     RESOLVED_STATUS = 3
     CLOSED_STATUS = 4
     DUPLICATE_STATUS = 5
+    PROCESSING_STATUS = 6
 
     STATUS_CHOICES = (
         (OPEN_STATUS, 'Open'),
+        (PROCESSING_STATUS, 'Em Andamento'),
         (REOPENED_STATUS, 'Reopened'),
         (RESOLVED_STATUS, 'Resolved'),
         (CLOSED_STATUS, 'Closed'),
