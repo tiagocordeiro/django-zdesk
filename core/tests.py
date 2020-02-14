@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import RequestFactory, TestCase, Client, override_settings
 from django.urls import reverse
 
-from .admin import CompanyAdmin
+from .admin import CompanyAdmin, CustomUserAdmin
 from .models import UserProfile, Company
 from .views import dashboard, profile_edit
 
@@ -44,6 +44,11 @@ class DashboardViewTest(TestCase):
         has_add_permission = CompanyAdmin.has_add_permission(self.company, request)
         self.assertEqual(has_add_permission, True)
 
+    def test_custom_user_profile_admin(self):
+        request = reverse('admin:auth_user_change', args={self.user_admin})
+        get_inline_instances = CustomUserAdmin.get_inline_instances(self.user_admin, request)
+        self.assertEqual(get_inline_instances, [])
+
     def test_dashboard_anonimo(self):
         request = self.factory.get('/')
         request.user = AnonymousUser()
@@ -65,6 +70,27 @@ class DashboardViewTest(TestCase):
         response = dashboard(request)
         self.assertContains(response, 'Total de prejuízo')
 
+    def test_live_dashboard_anonimo(self):
+        request = self.factory.get('live/')
+        request.user = AnonymousUser()
+
+        response = dashboard(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_live_dashboard_logado(self):
+        request = self.factory.get('live/')
+        request.user = self.user_admin
+
+        response = dashboard(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_live_dashboard_content(self):
+        request = self.factory.get('live/')
+        request.user = self.user_admin
+
+        response = dashboard(request)
+        self.assertContains(response, 'Total de prejuízo')
+
 
 class ProfileUpdateViewTest(TestCase):
     def setUp(self):
@@ -75,7 +101,7 @@ class ProfileUpdateViewTest(TestCase):
         # User support
         self.user_support = User.objects.create_user(username='john', email='john@…', password='top_secret')
 
-        # User Profile Parceiro
+        # User Profile Staff
         image_thumb = '''
                 R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
                 '''.strip()

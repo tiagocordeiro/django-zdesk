@@ -9,10 +9,10 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import TestCase, RequestFactory, Client
 from django.urls import reverse
 
-from core.views import dashboard
+from core.views import dashboard, live_dashboard
 from helpdesk.models import Queue, QueueQuestion, make_secret, Ticket
 from .forms import TicketForm
-from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit
+from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit, load_questions
 
 
 class HelpdeskTestCase(TestCase):
@@ -293,3 +293,17 @@ class HelpdeskTestCase(TestCase):
 
         response = dashboard(request)
         self.assertContains(response, 'R$ 1.904,93')
+
+        request = self.factory.get('live/')
+        request.user = self.user_staff
+
+        response = live_dashboard(request)
+        self.assertContains(response, 'R$ 1.904,93')
+
+    def test_load_questions_returns(self):
+        request = self.factory.get(reverse('load_questions'), data={'queue': self.queue_cnc.pk})
+        request.user = self.user_staff
+
+        response = load_questions(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.queue_cnc_question_01)
