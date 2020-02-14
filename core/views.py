@@ -3,40 +3,21 @@ from django.contrib.auth.models import User
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
 
+from core.facade import get_dashboard_context
 from core.forms import ProfileForm
 from core.models import UserProfile
-from helpdesk.models import Ticket
 
 
 @login_required
 def dashboard(request):
-    tickets = Ticket.objects.all().exclude(status__in=[3, 4, 5, 6])
-    tickets_processing = Ticket.objects.filter(status=6)
-    tickets_resolved = Ticket.objects.filter(status=3)
-    tickets_closed = Ticket.objects.filter(status=4)
-    tickets_all = Ticket.objects.all()
-    count_tickets_all = len(tickets_all)
-    count_tickets_todo = len(tickets)
-    count_tickets_resolved = len(tickets_resolved)
-    count_tickets_closed = len(tickets_closed)
-    total_losses = 0
-    for ticket in tickets_all:
-        try:
-            total_losses = ticket.losses + total_losses
-        except TypeError:
-            ticket.losses = 0
-            total_losses = ticket.losses + total_losses
-
-    context = {
-        'tickets': tickets,
-        'count_tickets_all': count_tickets_all,
-        'count_tickets_todo': count_tickets_todo,
-        'count_tickets_resolved': count_tickets_resolved,
-        'count_tickets_closed': count_tickets_closed,
-        'tickets_processing': tickets_processing,
-        'total_losses': total_losses
-    }
+    context = get_dashboard_context()
     return render(request, 'core/dashboard.html', context)
+
+
+@login_required
+def live_dashboard(request):
+    context = get_dashboard_context()
+    return render(request, 'core/live-dashboard.html', context)
 
 
 @login_required

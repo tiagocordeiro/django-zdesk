@@ -105,26 +105,26 @@
                                     <tr>
                                         <th>Pedido</th>
                                         <th>Cliente</th>
-                                        <th>WhatsApp</th>
-                                        <th>Data Chamado</th>
-                                        <th>Técnico pré diagnóstico</th>
-                                        <th>Prioridade</th>
+                                        <th class="align-center">WhatsApp</th>
+                                        <th class="align-center">Data Chamado</th>
+                                        <th class="align-center">Técnico pré diagnóstico</th>
+                                        <th class="align-center">Prioridade</th>
                                         <th>Problema</th>
-                                        <th>Papel</th>
-                                        <th>Técnico de campo</th>
+                                        <th class="align-center">Papel</th>
+                                        <th class="align-center">Técnico de campo</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th>Pedido</th>
                                         <th>Cliente</th>
-                                        <th>WhatsApp</th>
-                                        <th>Data Chamado</th>
-                                        <th>Técnico pré diagnóstico</th>
-                                        <th>Prioridade</th>
+                                        <th class="align-center">WhatsApp</th>
+                                        <th class="align-center">Data Chamado</th>
+                                        <th class="align-center">Técnico pré diagnóstico</th>
+                                        <th class="align-center">Prioridade</th>
                                         <th>Problema</th>
-                                        <th>Papel</th>
-                                        <th>Técnico de campo</th>
+                                        <th class="align-center">Papel</th>
+                                        <th class="align-center">Técnico de campo</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
@@ -151,9 +151,9 @@
                                     </td>
                                     <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
                                     </td>
-                                    <td>{{ ticket.submitter_phone }}</td>
-                                    <td>{{ ticket.created|date:"d/m/Y H:m" }}</td>
-                                    <td>
+                                    <td class="align-center">{{ ticket.submitter_phone }}</td>
+                                    <td class="align-center">{{ ticket.created|date:"d/m/Y H:m" }}</td>
+                                    <td class="align-center">
                                         {% if ticket.tecnico_pre_diagnostico %}
                                             <ul class="list-unstyled team-info margin-0">
                                                 <li>
@@ -177,7 +177,7 @@
                                             <span class="badge badge-default">Não</span>
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td class="align-center">
                                         {% if ticket.tecnico_de_campo %}
                                             <ul class="list-unstyled team-info margin-0">
                                                 <li>
@@ -213,26 +213,26 @@
                                     <tr>
                                         <th>Pedido</th>
                                         <th>Cliente</th>
-                                        <th>WhatsApp</th>
-                                        <th>Data Chamado</th>
-                                        <th>Técnico pré diagnóstico</th>
-                                        <th>Prioridade</th>
+                                        <th class="align-center">WhatsApp</th>
+                                        <th class="align-center">Data Chamado</th>
+                                        <th class="align-center">Técnico pré diagnóstico</th>
+                                        <th class="align-center">Prioridade</th>
                                         <th>Problema</th>
-                                        <th>Papel</th>
-                                        <th>Técnico de campo</th>
+                                        <th class="align-center">Papel</th>
+                                        <th class="align-center">Técnico de campo</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th>Pedido</th>
                                         <th>Cliente</th>
-                                        <th>WhatsApp</th>
-                                        <th>Data Chamado</th>
-                                        <th>Técnico pré diagnóstico</th>
-                                        <th>Prioridade</th>
+                                        <th class="align-center">WhatsApp</th>
+                                        <th class="align-center">Data Chamado</th>
+                                        <th class="align-center">Técnico pré diagnóstico</th>
+                                        <th class="align-center">Prioridade</th>
                                         <th>Problema</th>
-                                        <th>Papel</th>
-                                        <th>Técnico de campo</th>
+                                        <th class="align-center">Papel</th>
+                                        <th class="align-center">Técnico de campo</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
@@ -259,9 +259,9 @@
                                     </td>
                                     <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
                                     </td>
-                                    <td>{{ ticket.submitter_phone }}</td>
-                                    <td>{{ ticket.created|date:"d/m/Y H:m" }}</td>
-                                    <td>
+                                    <td class="align-center">{{ ticket.submitter_phone }}</td>
+                                    <td class="align-center">{{ ticket.created|date:"d/m/Y H:m" }}</td>
+                                    <td class="align-center">
                                         {% if ticket.tecnico_pre_diagnostico %}
                                             <ul class="list-unstyled team-info margin-0">
                                                 <li>
@@ -285,7 +285,7 @@
                                             <span class="badge badge-default">Não</span>
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td class="align-center">
                                         {% if ticket.tecnico_de_campo %}
                                             <ul class="list-unstyled team-info margin-0">
                                                 <li>
