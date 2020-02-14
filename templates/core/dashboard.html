@@ -5,6 +5,13 @@
 {% block extra_css %}
     <!-- JQuery DataTable Css -->
     <link rel="stylesheet" href="{% static 'assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css' %}">
+
+    <style>
+        .dataTables_info, .dataTables_paginate {
+            display: none;
+        }
+
+    </style>
 {% endblock extra_css %}
 
 {% block content %}
@@ -93,7 +100,7 @@
                         </div>
                         <div class="body">
                             <div class="table-responsive">
-                                <table id="para-fazer" class="table table-bordered table-striped table-hover dataTable js-exportable" data-order='[[5, "asc"]]'>
+                                <table id="processing" class="table table-hover dataTable js-exportable" data-order='[[5, "asc"]]' data-page-length='-1' style="border-collapse: collapse !important;">
                                     <thead>
                                     <tr>
                                         <th>Pedido</th>
@@ -137,7 +144,7 @@
                                         {% endif %}
                                     <td>
                                         {% if ticket.order %}
-                                            <span class="badge badge-primary">{{ ticket.order }}</span>
+                                            <span class="badge badge-primary" style="padding: 6px 3px 3px;">{{ ticket.order }}</span>
                                         {% else %}
                                             {{ ticket.pk }}
                                         {% endif %}
@@ -191,6 +198,115 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Processing tickets Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>Tickets </strong>em andamento</h2>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table id="processing" class="table table-hover dataTable js-exportable" data-order='[[5, "asc"]]' data-page-length='-1' style="border-collapse: collapse !important;">
+                                    <thead>
+                                    <tr>
+                                        <th>Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>WhatsApp</th>
+                                        <th>Data Chamado</th>
+                                        <th>Técnico pré diagnóstico</th>
+                                        <th>Prioridade</th>
+                                        <th>Problema</th>
+                                        <th>Papel</th>
+                                        <th>Técnico de campo</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>WhatsApp</th>
+                                        <th>Data Chamado</th>
+                                        <th>Técnico pré diagnóstico</th>
+                                        <th>Prioridade</th>
+                                        <th>Problema</th>
+                                        <th>Papel</th>
+                                        <th>Técnico de campo</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for ticket in tickets_processing %}
+                                        {% if ticket.priority == 1 %}
+                                            <tr class="table-danger">
+                                                {% elif ticket.priority == 2 %}
+                                            <tr class="table-warning">
+                                                {% elif ticket.priority == 3 %}
+                                            <tr class="table-primary">
+                                                {% elif ticket.priority == 4 %}
+                                            <tr class="table-info">
+                                                {% elif ticket.priority == 5 %}
+                                            <tr class="table-success">
+                                                {% else %}
+                                            <tr>
+                                        {% endif %}
+                                    <td>
+                                        {% if ticket.order %}
+                                            <span class="badge badge-primary" style="padding: 6px 3px 3px;">{{ ticket.order }}</span>
+                                        {% else %}
+                                            {{ ticket.pk }}
+                                        {% endif %}
+                                    </td>
+                                    <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
+                                    </td>
+                                    <td>{{ ticket.submitter_phone }}</td>
+                                    <td>{{ ticket.created|date:"d/m/Y H:m" }}</td>
+                                    <td>
+                                        {% if ticket.tecnico_pre_diagnostico %}
+                                            <ul class="list-unstyled team-info margin-0">
+                                                <li>
+                                                    <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
+                                                    {{ ticket.tecnico_pre_diagnostico.username }}
+                                                </li>
+                                            </ul>
+                                        {% else %}
+                                            Não definido
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-center">{{ ticket.get_priority_display }}</td>
+                                    <td>
+                                        {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
+                                        {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
+                                    </td>
+                                    <td class="align-center">
+                                        {% if ticket.need_paper %}
+                                            <span class="badge badge-success">Sim</span>
+                                        {% else %}
+                                            <span class="badge badge-default">Não</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if ticket.tecnico_de_campo %}
+                                            <ul class="list-unstyled team-info margin-0">
+                                                <li>
+                                                    <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
+                                                    {{ ticket.tecnico_de_campo.username }}
+                                                </li>
+                                            </ul>
+                                        {% else %}
+                                            Não definido
+                                        {% endif %}
+                                    </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 {% endblock %}

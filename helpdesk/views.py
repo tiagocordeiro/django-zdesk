@@ -148,12 +148,24 @@ def ticket_list_all(request):
 
 @login_required
 def ticket_list_todo(request):
-    tickets = Ticket.objects.all().exclude(status__in=[3, 4])
+    tickets = Ticket.objects.all().exclude(status__in=[3, 4, 5, 6])
     context = {
         'tickets': tickets,
         'title': 'Tickets para fazer',
         'table_title': '<strong>Tickets </strong>para fazer',
         'breadcrumb': 'Para fazer',
+    }
+    return render(request, 'helpdesk/ticket_list.html', context)
+
+
+@login_required
+def ticket_list_processing(request):
+    tickets = Ticket.objects.filter(status__exact=6)
+    context = {
+        'tickets': tickets,
+        'title': 'Tickets em andamento',
+        'table_title': '<strong>Tickets </strong>fazendo',
+        'breadcrumb': 'Em andamento',
     }
     return render(request, 'helpdesk/ticket_list.html', context)
 
