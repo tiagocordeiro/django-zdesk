@@ -14,5 +14,6 @@ urlpatterns = [
     path('tickets/done/', views.ticket_list_done, name='ticket_list_done'),
     path('tickets/processing/', views.ticket_list_processing, name='ticket_list_processing'),
     path('tickets/comment/<pk>/', views.ticket_comment, name='ticket_comment'),
-    path('tickets/ajax/load-questions/', views.load_questions, name='load_questions')
+    path('tickets/ajax/load-questions/', views.load_questions, name='load_questions'),
+    path('tickets/ajax/feed/', views.ticket_feed, name='ticket_feed')
 ]

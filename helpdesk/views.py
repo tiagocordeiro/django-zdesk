@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -192,3 +193,17 @@ def ticket_comment(request, **kwargs):
 
     messages.success(request, "Novo comentário adicionado")
     return redirect(reverse('ticket_edit', args={ticket.pk}))
+
+
+@login_required
+def ticket_feed(request):
+    tickets = Ticket.objects.all().order_by('-modified').values('modified')
+    last_ticket_updated = tickets.first()
+    # tickets_list = list(tickets)
+
+    data = {
+        'last_ticket_updated': last_ticket_updated,
+        # 'tickets': tickets_list,
+    }
+
+    return JsonResponse(data)
