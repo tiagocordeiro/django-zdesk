@@ -10,9 +10,10 @@ from django.test import TestCase, RequestFactory, Client
 from django.urls import reverse
 
 from core.views import dashboard, live_dashboard
-from helpdesk.models import Queue, QueueQuestion, make_secret, Ticket
-from .forms import TicketForm
-from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit, load_questions
+from helpdesk.models import Queue, QueueQuestion, make_secret, Ticket, TicketUpdate
+from .forms import TicketForm, TicketManageForm
+from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit, load_questions, ticket_list_all, ticket_feed, \
+    ticket_list_todo, ticket_list_processing, ticket_list_done, ticket_comment
 
 
 class HelpdeskTestCase(TestCase):
@@ -194,6 +195,42 @@ class HelpdeskTestCase(TestCase):
         form = TicketForm(data=form_data)
         self.assertEqual(form.is_valid(), True)
 
+    def test_ticket_form_invalid(self):
+        invalid_form_data = {
+            'queue': 'Errado',
+            'problems': 'Inválido',
+            'submitter_name': 'Nazir',
+            'submitter_company': 'iwAtz',
+            'submitter_phone': '(15) 4242-1337',
+            'submitter_email': 'nazir@rizan.foo',
+            'status': 'Inválido',
+            'priority': 'ops',
+            'tecnico_pre_diagnostico': self.user_staff,
+            'tecnico_de_campo': self.user_staff,
+            'is_customer': '',
+            'customer_code': '',
+            'need_paper': '',
+            'resolution_report': '',
+        }
+        form = TicketForm(data=invalid_form_data)
+        self.assertEqual(form.is_valid(), False)
+
+    def test_ticket_manage_form(self):
+        invalid_form_data = {
+            'status': 'Errado',
+            'priority': 'Inválido',
+            'tecnico_pre_diagnostico': 'Nazir',
+            'tecnico_de_campo': 'iwAtz',
+            'is_customer': '(15) 4242-1337',
+            'customer_code': 'nazir@rizan.foo',
+            'order': 'Inválido',
+            'losses': 'ops',
+            'need_paper': '',
+            'resolution_report': '',
+        }
+        form = TicketManageForm(data=invalid_form_data)
+        self.assertEqual(form.is_valid(), False)
+
     def test_add_ticket_by_staff(self):
         tickets = Ticket.objects.all()
         self.assertEqual(len(tickets), 1)
@@ -300,6 +337,38 @@ class HelpdeskTestCase(TestCase):
         response = live_dashboard(request)
         self.assertContains(response, 'R$ 1.904,93')
 
+    def test_ticket_update_by_staff_with_erro_in_form(self):
+        ticket = self.ticket_non_customer
+
+        wrong_ticket_data = {
+            'submitter_name': '',
+            'submitter_company': '',
+            'submitter_phone': '',
+            'submitter_email': '',
+            'status': 'Status errado',
+            'priority': 'Aqui deve ser inteiro',
+            'tecnico_pre_diagnostico': self.user_staff.pk,
+            'tecnico_de_campo': self.user_staff.pk,
+            'is_customer': True,
+            'customer_code': 666,
+            'order': 999,
+            'losses': 0,
+            'resolution_report': '',
+        }
+
+        wrong_request = self.factory.post(reverse('ticket_edit', kwargs={'pk': ticket.pk}), wrong_ticket_data)
+        wrong_request.user = self.user_staff
+
+        setattr(wrong_request, 'session', 'session')
+        messages = FallbackStorage(wrong_request)
+        setattr(wrong_request, '_messages', messages)
+
+        response = ticket_edit(wrong_request, pk=ticket.pk)
+        ticket.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<ul class="errorlist">')
+
     def test_load_questions_returns(self):
         request = self.factory.get(reverse('load_questions'), data={'queue': self.queue_cnc.pk})
         request.user = self.user_staff
@@ -307,3 +376,105 @@ class HelpdeskTestCase(TestCase):
         response = load_questions(request)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.queue_cnc_question_01)
+
+    def test_ticket_list_all_view_non_logged_user(self):
+        request = self.factory.get('/tickets/')
+        request.user = AnonymousUser()
+
+        response = ticket_list_all(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_all_view_staff_user(self):
+        request = self.factory.get('/tickets/')
+        request.user = self.user_staff
+
+        response = ticket_list_all(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_ticket_list_todo_view_non_logged_user(self):
+        request = self.factory.get('/tickets/todo/')
+        request.user = AnonymousUser()
+
+        response = ticket_list_todo(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_todo_view_staff_user(self):
+        request = self.factory.get('/tickets/todo/')
+        request.user = self.user_staff
+
+        response = ticket_list_todo(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_ticket_list_processing_view_non_logged_user(self):
+        request = self.factory.get('/tickets/processing/')
+        request.user = AnonymousUser()
+
+        response = ticket_list_processing(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_processing_view_staff_user(self):
+        request = self.factory.get('/tickets/processing/')
+        request.user = self.user_staff
+
+        response = ticket_list_processing(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_ticket_list_done_view_non_logged_user(self):
+        request = self.factory.get('/tickets/done/')
+        request.user = AnonymousUser()
+
+        response = ticket_list_done(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_done_view_staff_user(self):
+        request = self.factory.get('/tickets/done/')
+        request.user = self.user_staff
+
+        response = ticket_list_done(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_ticket_list_feed_non_logged_user(self):
+        request = self.factory.get('tickets/ajax/feed/')
+        request.user = AnonymousUser()
+
+        response = ticket_feed(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_feed_staff_user(self):
+        request = self.factory.get('tickets/ajax/feed/')
+        request.user = self.user_staff
+
+        response = ticket_feed(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_ticket_comment_non_logged_user(self):
+        request = self.factory.get('tickets/comment/<pk>/')
+        request.user = AnonymousUser()
+
+        response = ticket_comment(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_comment_staff_user(self):
+        ticket = self.ticket_non_customer
+        print(ticket)
+        tickets_updates = TicketUpdate.objects.all()
+        self.assertEqual(len(tickets_updates), 0)
+
+        new_comment = {
+            'update_ticket_pk': ticket.pk,
+            'update_title': 'Test comment title',
+            'update_comment': 'um comentário de teste'
+        }
+
+        request = self.factory.post(reverse('ticket_comment', kwargs={'pk': ticket.pk}), new_comment)
+        request.user = self.user_staff
+
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
+        response = ticket_comment(request, pk=ticket.pk)
+        self.assertEqual(response.status_code, 302)
+
+        tickets_updates = TicketUpdate.objects.all()
+        self.assertEqual(len(tickets_updates), 1)

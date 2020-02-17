@@ -2,10 +2,10 @@ from helpdesk.models import Ticket
 
 
 def get_dashboard_context():
-    tickets = Ticket.objects.all().exclude(status__in=[3, 4, 5, 6])
-    tickets_processing = Ticket.objects.filter(status=6)
-    tickets_resolved = Ticket.objects.filter(status=3)
-    tickets_closed = Ticket.objects.filter(status=4)
+    tickets = Ticket.objects.all().exclude(status__in=[3, 4, 5, 6]).order_by('priority')
+    tickets_processing = Ticket.objects.filter(status=6).order_by('priority')
+    tickets_resolved = Ticket.objects.filter(status=3).order_by('priority')
+    tickets_closed = Ticket.objects.filter(status=4).order_by('priority')
     tickets_all = Ticket.objects.all()
     count_tickets_all = len(tickets_all)
     count_tickets_todo = len(tickets)

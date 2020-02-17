@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <meta name="description" content="Django simple ticketing system">
 
     <title>:: zDesk :: Live Dashboard</title>
     <!-- Favicon-->
@@ -14,49 +14,25 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.min.css' %}">
-
-    <!-- JQuery DataTable Css -->
-    <link rel="stylesheet" href="{% static 'assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css' %}">
-
-    <style>
-        .dataTables_info, .dataTables_paginate {
-            display: none;
-        }
-    </style>
-
 </head>
 
 <body class="theme-blue">
 <section class="content" style="margin: 20px; padding: 20px;">
-    <div class="block-header">
-        <div class="row">
-            <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Live Dashboard</h2>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i> zDesk</a>
-                    </li>
-                    <li class="breadcrumb-item active">Live Dashboard</li>
-                </ul>
-                <button class="btn btn-primary btn-icon mobile_menu" type="button">
-                    <i class="zmdi zmdi-sort-amount-desc"></i></button>
-            </div>
-            <div class="col-lg-5 col-md-6 col-sm-12">
 
-            </div>
-        </div>
-    </div>
     <div class="container-fluid">
         <div class="row clearfix">
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card widget_2 big_icon documents">
                     <div class="body">
                         <h6>Para fazer</h6>
-                        <h2 class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">{{ count_tickets_todo }}</h2>
+                        <h2 id="count_tickets_todo" class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">{{ count_tickets_todo }}</h2>
                         <small>Equivale
-                            a {{ count_tickets_todo|as_percentage_of:count_tickets_all|floatformat:"0" }}% do
+                            a
+                            <span id="tickets_todo_percent">{{ count_tickets_todo|as_percentage_of:count_tickets_all|floatformat:"0" }}</span>%
+                            do
                             total</small>
-                        <div class="progress">
-                            <div class="progress-bar l-amber" role="progressbar" aria-valuenow="{{ count_tickets_todo|as_percentage_of:count_tickets_all|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ count_tickets_todo|as_percentage_of:count_tickets_all|floatformat:"0" }}%;"></div>
+                        <div id="tickets_todo_percent_progress" class="progress">
+                            <div id="count_tickets_todo_bar" class="progress-bar l-amber" role="progressbar" aria-valuenow="{{ count_tickets_todo|as_percentage_of:count_tickets_all|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ count_tickets_todo|as_percentage_of:count_tickets_all|floatformat:"0" }}%;"></div>
                         </div>
                     </div>
                 </div>
@@ -65,12 +41,14 @@
                 <div class="card widget_2 big_icon documents">
                     <div class="body">
                         <h6>Resolvidos</h6>
-                        <h2 class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">{{ count_tickets_resolved }}</h2>
+                        <h2 id="count_tickets_resolved" class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">{{ count_tickets_resolved }}</h2>
                         <small>Equivale
-                            a {{ count_tickets_resolved|as_percentage_of:count_tickets_all|floatformat:"0" }}% do
+                            a
+                            <span id="tickets_resolved_percent">{{ count_tickets_resolved|as_percentage_of:count_tickets_all|floatformat:"0" }}</span>%
+                            do
                             total</small>
-                        <div class="progress">
-                            <div class="progress-bar l-blue" role="progressbar" aria-valuenow="{{ count_tickets_resolved|as_percentage_of:count_tickets_all|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ count_tickets_resolved|as_percentage_of:count_tickets_all|floatformat:"0" }}%;"></div>
+                        <div id="tickets_resolved_percent_progress" class="progress">
+                            <div id="count_tickets_resolved_bar" class="progress-bar l-blue" role="progressbar" aria-valuenow="{{ count_tickets_resolved|as_percentage_of:count_tickets_all|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ count_tickets_resolved|as_percentage_of:count_tickets_all|floatformat:"0" }}%;"></div>
                         </div>
                     </div>
                 </div>
@@ -79,12 +57,14 @@
                 <div class="card widget_2 big_icon documents">
                     <div class="body">
                         <h6>Fechados</h6>
-                        <h2 class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">{{ count_tickets_closed }}</h2>
+                        <h2 id="count_tickets_closed" class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">{{ count_tickets_closed }}</h2>
                         <small>Equivale
-                            a {{ count_tickets_closed|as_percentage_of:count_tickets_all|floatformat:"0" }}% do
+                            a
+                            <span id="tickets_closed_percent">{{ count_tickets_closed|as_percentage_of:count_tickets_all|floatformat:"0" }}</span>%
+                            do
                             total</small>
                         <div class="progress">
-                            <div class="progress-bar l-green" role="progressbar" aria-valuenow="{{ count_tickets_closed|as_percentage_of:count_tickets_all|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ count_tickets_closed|as_percentage_of:count_tickets_all|floatformat:"0" }}%;"></div>
+                            <div id="count_tickets_closed_bar" class="progress-bar l-green" role="progressbar" aria-valuenow="{{ count_tickets_closed|as_percentage_of:count_tickets_all|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ count_tickets_closed|as_percentage_of:count_tickets_all|floatformat:"0" }}%;"></div>
                         </div>
                     </div>
                 </div>
@@ -93,7 +73,7 @@
                 <div class="card widget_2">
                     <div class="body">
                         <h6>Prejuízo</h6>
-                        <h2 class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">
+                        <h2 id="total_losses" class="mb-0 text-dark align-center" style="font-size: 3em; color: #313131;">
                             R$ {{ total_losses|currency_display }}</h2>
                         <small>Total de prejuízo</small>
                         <div class="progress">
@@ -103,241 +83,190 @@
                 </div>
             </div>
         </div>
-        <!-- Exportable Table -->
-        <div class="row clearfix">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Tickets </strong>para fazer</h2>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <table id="para-fazer" class="table table-hover dataTable js-exportable" data-order='[[5, "asc"]]' data-page-length='-1' style="border-collapse: collapse !important;">
-                                <thead>
-                                <tr>
-                                    <th>Pedido</th>
-                                    <th>Cliente</th>
-                                    <th class="align-center">WhatsApp</th>
-                                    <th class="align-center">Data Chamado</th>
-                                    <th class="align-center">Técnico pré diagnóstico</th>
-                                    <th class="align-center">Prioridade</th>
-                                    <th>Problema</th>
-                                    <th class="align-center">Papel</th>
-                                    <th class="align-center">Técnico de campo</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Pedido</th>
-                                    <th>Cliente</th>
-                                    <th class="align-center">WhatsApp</th>
-                                    <th class="align-center">Data Chamado</th>
-                                    <th class="align-center">Técnico pré diagnóstico</th>
-                                    <th class="align-center">Prioridade</th>
-                                    <th>Problema</th>
-                                    <th class="align-center">Papel</th>
-                                    <th class="align-center">Técnico de campo</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                {% for ticket in tickets %}
-                                    {% if ticket.priority == 1 %}
-                                        <tr class="table-danger">
-                                            {% elif ticket.priority == 2 %}
-                                        <tr class="table-warning">
-                                            {% elif ticket.priority == 3 %}
-                                        <tr class="table-primary">
-                                            {% elif ticket.priority == 4 %}
-                                        <tr class="table-info">
-                                            {% elif ticket.priority == 5 %}
-                                        <tr class="table-success">
-                                            {% else %}
-                                        <tr>
-                                    {% endif %}
-                                <td>
-                                    {% if ticket.order %}
-                                        <span class="badge badge-primary" style="padding: 6px 3px 3px;">{{ ticket.order }}</span>
-                                    {% else %}
-                                        {{ ticket.pk }}
-                                    {% endif %}
-                                </td>
-                                <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
-                                </td>
-                                <td class="align-center">{{ ticket.submitter_phone }}</td>
-                                <td class="align-center">{{ ticket.created|date:"d/m/Y H:m" }}</td>
-                                <td class="align-center">
-                                    {% if ticket.tecnico_pre_diagnostico %}
-                                        <ul class="list-unstyled team-info margin-0">
-                                            <li>
-                                                <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
-                                                {{ ticket.tecnico_pre_diagnostico.username }}
-                                            </li>
-                                        </ul>
-                                    {% else %}
-                                        Não definido
-                                    {% endif %}
-                                </td>
-                                <td class="align-center">{{ ticket.get_priority_display }}</td>
-                                <td>
-                                    {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
-                                    {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
-                                </td>
-                                <td class="align-center">
-                                    {% if ticket.need_paper %}
-                                        <span class="badge badge-success">Sim</span>
-                                    {% else %}
-                                        <span class="badge badge-default">Não</span>
-                                    {% endif %}
-                                </td>
-                                <td class="align-center">
-                                    {% if ticket.tecnico_de_campo %}
-                                        <ul class="list-unstyled team-info margin-0">
-                                            <li>
-                                                <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
-                                                {{ ticket.tecnico_de_campo.username }}
-                                            </li>
-                                        </ul>
-                                    {% else %}
-                                        Não definido
-                                    {% endif %}
-                                </td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+
+        <div id="ticketstable" class="row clearfix">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="card project_list">
+                    <div class="table-responsive">
+                        <div class="header">
+                            <h2><strong>Tickets </strong>para fazer</h2>
                         </div>
+                        <table class="table table-hover c_table">
+                            <thead>
+                            <tr>
+                                <th>Pedido</th>
+                                <th>Cliente</th>
+                                <th class="align-center">WhatsApp</th>
+                                <th class="align-center">Data Chamado</th>
+                                <th class="align-center">Técnico pré diagnóstico</th>
+                                <th class="align-center">Prioridade</th>
+                                <th>Problema</th>
+                                <th class="align-center">Papel</th>
+                                <th class="align-center">Técnico de campo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for ticket in tickets %}
+                                {% if ticket.priority == 1 %}
+                                    <tr class="table-danger">
+                                        {% elif ticket.priority == 2 %}
+                                    <tr class="table-warning">
+                                        {% elif ticket.priority == 3 %}
+                                    <tr class="table-primary">
+                                        {% elif ticket.priority == 4 %}
+                                    <tr class="table-info">
+                                        {% elif ticket.priority == 5 %}
+                                    <tr class="table-success">
+                                        {% else %}
+                                    <tr>
+                                {% endif %}
+                            <td>
+                                {% if ticket.order %}
+                                    <span class="badge badge-primary" style="padding: 6px 3px 3px;">{{ ticket.order }}</span>
+                                {% else %}
+                                    {{ ticket.pk }}
+                                {% endif %}
+                            </td>
+                            <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
+                            </td>
+                            <td class="align-center">{{ ticket.submitter_phone }}</td>
+                            <td class="align-center">{{ ticket.created|date:"d/m/Y H:m" }}</td>
+                            <td class="align-center">
+                                {% if ticket.tecnico_pre_diagnostico %}
+                                    <ul class="list-unstyled team-info margin-0">
+                                        <li>
+                                            <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
+                                            {{ ticket.tecnico_pre_diagnostico.username }}
+                                        </li>
+                                    </ul>
+                                {% else %}
+                                    Não definido
+                                {% endif %}
+                            </td>
+                            <td class="align-center">{{ ticket.get_priority_display }}</td>
+                            <td>
+                                {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
+                                {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
+                            </td>
+                            <td class="align-center">
+                                {% if ticket.need_paper %}
+                                    <span class="badge badge-success">Sim</span>
+                                {% else %}
+                                    <span class="badge badge-default">Não</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-center">
+                                {% if ticket.tecnico_de_campo %}
+                                    <ul class="list-unstyled team-info margin-0">
+                                        <li>
+                                            <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
+                                            {{ ticket.tecnico_de_campo.username }}
+                                        </li>
+                                    </ul>
+                                {% else %}
+                                    Não definido
+                                {% endif %}
+                            </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <div class="header">
+                            <h2><strong>Tickets </strong>em andamento</h2>
+                        </div>
+                        <table class="table table-hover c_table">
+                            <thead>
+                            <tr>
+                                <th>Pedido</th>
+                                <th>Cliente</th>
+                                <th class="align-center">WhatsApp</th>
+                                <th class="align-center">Data Chamado</th>
+                                <th class="align-center">Técnico pré diagnóstico</th>
+                                <th class="align-center">Prioridade</th>
+                                <th>Problema</th>
+                                <th class="align-center">Papel</th>
+                                <th class="align-center">Técnico de campo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for ticket in tickets_processing %}
+                                {% if ticket.priority == 1 %}
+                                    <tr class="table-danger">
+                                        {% elif ticket.priority == 2 %}
+                                    <tr class="table-warning">
+                                        {% elif ticket.priority == 3 %}
+                                    <tr class="table-primary">
+                                        {% elif ticket.priority == 4 %}
+                                    <tr class="table-info">
+                                        {% elif ticket.priority == 5 %}
+                                    <tr class="table-success">
+                                        {% else %}
+                                    <tr>
+                                {% endif %}
+                            <td>
+                                {% if ticket.order %}
+                                    <span class="badge badge-primary" style="padding: 6px 3px 3px;">{{ ticket.order }}</span>
+                                {% else %}
+                                    {{ ticket.pk }}
+                                {% endif %}
+                            </td>
+                            <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
+                            </td>
+                            <td class="align-center">{{ ticket.submitter_phone }}</td>
+                            <td class="align-center">{{ ticket.created|date:"d/m/Y H:m" }}</td>
+                            <td class="align-center">
+                                {% if ticket.tecnico_pre_diagnostico %}
+                                    <ul class="list-unstyled team-info margin-0">
+                                        <li>
+                                            <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
+                                            {{ ticket.tecnico_pre_diagnostico.username }}
+                                        </li>
+                                    </ul>
+                                {% else %}
+                                    Não definido
+                                {% endif %}
+                            </td>
+                            <td class="align-center">{{ ticket.get_priority_display }}</td>
+                            <td>
+                                {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
+                                {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
+                            </td>
+                            <td class="align-center">
+                                {% if ticket.need_paper %}
+                                    <span class="badge badge-success">Sim</span>
+                                {% else %}
+                                    <span class="badge badge-default">Não</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-center">
+                                {% if ticket.tecnico_de_campo %}
+                                    <ul class="list-unstyled team-info margin-0">
+                                        <li>
+                                            <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
+                                            {{ ticket.tecnico_de_campo.username }}
+                                        </li>
+                                    </ul>
+                                {% else %}
+                                    Não definido
+                                {% endif %}
+                            </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Processing tickets Table -->
-        <div class="row clearfix">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Tickets </strong>em andamento</h2>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <table id="processing" class="table table-hover dataTable js-exportable" data-order='[[5, "asc"]]' data-page-length='-1' style="border-collapse: collapse !important;">
-                                <thead>
-                                <tr>
-                                    <th>Pedido</th>
-                                    <th>Cliente</th>
-                                    <th class="align-center">WhatsApp</th>
-                                    <th class="align-center">Data Chamado</th>
-                                    <th class="align-center">Técnico pré diagnóstico</th>
-                                    <th class="align-center">Prioridade</th>
-                                    <th>Problema</th>
-                                    <th class="align-center">Papel</th>
-                                    <th class="align-center">Técnico de campo</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Pedido</th>
-                                    <th>Cliente</th>
-                                    <th class="align-center">WhatsApp</th>
-                                    <th class="align-center">Data Chamado</th>
-                                    <th class="align-center">Técnico pré diagnóstico</th>
-                                    <th class="align-center">Prioridade</th>
-                                    <th>Problema</th>
-                                    <th class="align-center">Papel</th>
-                                    <th class="align-center">Técnico de campo</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                {% for ticket in tickets_processing %}
-                                    {% if ticket.priority == 1 %}
-                                        <tr class="table-danger">
-                                            {% elif ticket.priority == 2 %}
-                                        <tr class="table-warning">
-                                            {% elif ticket.priority == 3 %}
-                                        <tr class="table-primary">
-                                            {% elif ticket.priority == 4 %}
-                                        <tr class="table-info">
-                                            {% elif ticket.priority == 5 %}
-                                        <tr class="table-success">
-                                            {% else %}
-                                        <tr>
-                                    {% endif %}
-                                <td>
-                                    {% if ticket.order %}
-                                        <span class="badge badge-primary" style="padding: 6px 3px 3px;">{{ ticket.order }}</span>
-                                    {% else %}
-                                        {{ ticket.pk }}
-                                    {% endif %}
-                                </td>
-                                <td><a href="{% url 'ticket_edit' pk=ticket.pk %}">{{ ticket.submitter_name }}</a>
-                                </td>
-                                <td class="align-center">{{ ticket.submitter_phone }}</td>
-                                <td class="align-center">{{ ticket.created|date:"d/m/Y H:m" }}</td>
-                                <td class="align-center">
-                                    {% if ticket.tecnico_pre_diagnostico %}
-                                        <ul class="list-unstyled team-info margin-0">
-                                            <li>
-                                                <img src="{{ ticket.tecnico_pre_diagnostico.userprofile.avatar.url }}" alt="{{ ticket.tecnico_pre_diagnostico.username }}">
-                                                {{ ticket.tecnico_pre_diagnostico.username }}
-                                            </li>
-                                        </ul>
-                                    {% else %}
-                                        Não definido
-                                    {% endif %}
-                                </td>
-                                <td class="align-center">{{ ticket.get_priority_display }}</td>
-                                <td>
-                                    {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
-                                    {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
-                                </td>
-                                <td class="align-center">
-                                    {% if ticket.need_paper %}
-                                        <span class="badge badge-success">Sim</span>
-                                    {% else %}
-                                        <span class="badge badge-default">Não</span>
-                                    {% endif %}
-                                </td>
-                                <td class="align-center">
-                                    {% if ticket.tecnico_de_campo %}
-                                        <ul class="list-unstyled team-info margin-0">
-                                            <li>
-                                                <img src="{{ ticket.tecnico_de_campo.userprofile.avatar.url }}" alt="{{ ticket.tecnico_de_campo.username }}">
-                                                {{ ticket.tecnico_de_campo.username }}
-                                            </li>
-                                        </ul>
-                                    {% else %}
-                                        Não definido
-                                    {% endif %}
-                                </td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
+
 </section>
 <!-- Jquery Core Js -->
 <script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
 <script src="{% static 'assets/bundles/vendorscripts.bundle.js' %}"></script> <!-- Lib Scripts Plugin Js -->
-
-<!-- Jquery DataTable Plugin Js -->
-<script src="{% static 'assets/bundles/datatablescripts.bundle.js' %}"></script>
-<script src="{% static 'assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
-<script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
-<script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
-<script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.flash.min.js' %}"></script>
-<script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
-<script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
-
-<script src="{% static 'assets/js/extras/moment.min.js' %}"></script>
-<script src="{% static 'assets/js/extras/datetime-moment.js' %}"></script>
-
-<script src="{% static 'assets/js/pages/tables/jquery-datatable.js' %}"></script>
 
 <script src="{% static 'assets/plugins/bootstrap-notify/bootstrap-notify.js' %}"></script>
 
@@ -345,6 +274,13 @@
 <script type="text/javascript">
     let lastSaved;
     let oldSaved;
+    let CountTicketsAll;
+    let CountTicketsTodo;
+    let CountTicketsResolved;
+    let CountTicketsClosed;
+    let TotalLosses;
+
+    let TicketsResolvedPercent;
 
     $(function () {
         setInterval(getLastUpdate, 60000);
@@ -357,6 +293,39 @@
                     oldSaved = lastSaved;
                     lastSaved = json['last_ticket_updated']['modified'];
                     if (oldSaved !== lastSaved) {
+                        fetch("{% url 'json_dashboard_context' %}").then(function (data) {
+                            data.json().then(function (json) {
+                                let newCountTicketsAll = json["count_tickets_all"];
+                                let newTotalLosses = json["total_losses"];
+
+                                let newCountTicketsTodo = json["count_tickets_todo"];
+                                let newCountTicketsTodoPercent = Math.trunc(newCountTicketsTodo / newCountTicketsAll * 100);
+                                document.querySelector('#count_tickets_todo').innerHTML = newCountTicketsTodo;
+                                document.querySelector('#tickets_todo_percent').innerHTML = newCountTicketsTodoPercent.toString();
+                                document.querySelector('#count_tickets_todo_bar').style['width'] = newCountTicketsTodoPercent + '%';
+
+                                let newCountTicketsResolved = json["count_tickets_resolved"];
+                                let newCountTicketsResolvedPercent = Math.trunc(newCountTicketsResolved / newCountTicketsAll * 100);
+                                document.querySelector('#count_tickets_resolved').innerHTML = newCountTicketsResolved;
+                                document.querySelector('#tickets_resolved_percent').innerHTML = newCountTicketsResolvedPercent.toString();
+                                document.querySelector('#count_tickets_resolved_bar').style['width'] = newCountTicketsResolvedPercent + '%';
+
+                                let newCountTicketsClosed = json["count_tickets_closed"];
+                                let newCountTicketsClosedPercent = Math.trunc(newCountTicketsClosed / newCountTicketsAll * 100);
+                                document.querySelector('#count_tickets_closed').innerHTML = newCountTicketsClosed;
+                                document.querySelector('#tickets_closed_percent').innerHTML = newCountTicketsClosedPercent.toString();
+                                document.querySelector('#count_tickets_closed_bar').style['width'] = newCountTicketsClosedPercent + '%';
+
+                                document.querySelector('#total_losses').innerHTML = 'R$ ' + newTotalLosses;
+                            })
+                        });
+
+                        fetch("{% url 'tickets_tables_builder' %}").then(function (table) {
+                            table.text().then(function (content) {
+                                document.querySelector('#ticketstable').innerHTML = content;
+                            })
+                        });
+
                         $.notify({
                             title: '<strong>Atualizando...</strong>',
                             message: 'Nova atualização de ticket.',
@@ -364,8 +333,6 @@
                             type: 'info',
                             allow_dismiss: false,
                         });
-
-                        setInterval(window.location.href = {% url 'live_dashboard' %}, 3000)
 
                     }
                 })
@@ -381,10 +348,9 @@
                         lastSaved = json['last_ticket_updated']['modified'];
                     })
                 }
-            })
+            });
         })
     }());
-
 </script>
 </body>
 </html>
