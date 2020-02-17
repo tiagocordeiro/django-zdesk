@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
+from core.facade import get_dashboard_context
+from core.templatetags.core_extras import currency_display
 from .forms import TicketManageForm, TicketForm
 from .models import Queue, Ticket, QueueQuestion, TicketUpdate
 
@@ -192,3 +195,39 @@ def ticket_comment(request, **kwargs):
 
     messages.success(request, "Novo comentário adicionado")
     return redirect(reverse('ticket_edit', args={ticket.pk}))
+
+
+@login_required
+def ticket_feed(request):
+    tickets = Ticket.objects.all().order_by('-modified').values('modified')
+    last_ticket_updated = tickets.first()
+
+    data = {
+        'last_ticket_updated': last_ticket_updated,
+    }
+
+    return JsonResponse(data)
+
+
+@login_required
+def json_dashboard_context(request):
+    context = get_dashboard_context()
+    print(context)
+    print(list(context['tickets'].values()))
+    print(context.values())
+    last_ticket_updated = Ticket.objects.all().order_by('-modified').values().first()
+
+    return JsonResponse({'tickets': list(context['tickets'].values()),
+                         'total_losses': currency_display(context['total_losses']),
+                         'count_tickets_all': context['count_tickets_all'],
+                         'count_tickets_todo': context['count_tickets_todo'],
+                         'count_tickets_closed': context['count_tickets_closed'],
+                         'count_tickets_resolved': context['count_tickets_resolved'],
+                         'tickets_processing': list(context['tickets_processing'].values()),
+                         'last_ticket_updated': list(last_ticket_updated),
+                         })
+
+
+def tickets_tables_builder(request):
+    context = get_dashboard_context()
+    return render(request, 'core/tickets-tables.html', context)
