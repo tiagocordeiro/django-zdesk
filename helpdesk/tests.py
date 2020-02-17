@@ -456,7 +456,6 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_comment_staff_user(self):
         ticket = self.ticket_non_customer
-        print(ticket)
         tickets_updates = TicketUpdate.objects.all()
         self.assertEqual(len(tickets_updates), 0)
 
