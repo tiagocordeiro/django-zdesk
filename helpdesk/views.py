@@ -186,6 +186,30 @@ def ticket_list_done(request):
 
 
 @login_required
+def ticket_list_closed(request):
+    tickets = Ticket.objects.filter(status__exact=4)
+    context = {
+        'tickets': tickets,
+        'title': 'Tickets fechados',
+        'table_title': '<strong>Tickets </strong>fechados',
+        'breadcrumb': 'Fechados',
+    }
+    return render(request, 'helpdesk/ticket_list.html', context)
+
+
+@login_required
+def ticket_list_resolved(request):
+    tickets = Ticket.objects.filter(status__exact=3)
+    context = {
+        'tickets': tickets,
+        'title': 'Tickets resolvidos',
+        'table_title': '<strong>Tickets </strong>resolvidos',
+        'breadcrumb': 'Resolvidos',
+    }
+    return render(request, 'helpdesk/ticket_list.html', context)
+
+
+@login_required
 def ticket_comment(request, **kwargs):
     ticket = Ticket.objects.get(pk=request.POST.get('update_ticket_pk'))
     user = request.user
@@ -212,9 +236,6 @@ def ticket_feed(request):
 @login_required
 def json_dashboard_context(request):
     context = get_dashboard_context()
-    print(context)
-    print(list(context['tickets'].values()))
-    print(context.values())
     last_ticket_updated = Ticket.objects.all().order_by('-modified').values().first()
 
     return JsonResponse({'tickets': list(context['tickets'].values()),
@@ -228,6 +249,7 @@ def json_dashboard_context(request):
                          })
 
 
+@login_required
 def tickets_tables_builder(request):
     context = get_dashboard_context()
     return render(request, 'core/tickets-tables.html', context)

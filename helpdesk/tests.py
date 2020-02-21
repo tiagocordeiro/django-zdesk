@@ -13,7 +13,7 @@ from core.views import dashboard, live_dashboard
 from helpdesk.models import Queue, QueueQuestion, make_secret, Ticket, TicketUpdate
 from .forms import TicketForm, TicketManageForm
 from .views import ticket_crete, ticket_detail, ticket_add, ticket_edit, load_questions, ticket_list_all, ticket_feed, \
-    ticket_list_todo, ticket_list_processing, ticket_list_done, ticket_comment
+    ticket_list_todo, ticket_list_processing, ticket_list_done, ticket_comment, ticket_list_closed, ticket_list_resolved
 
 
 class HelpdeskTestCase(TestCase):
@@ -325,6 +325,13 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(ticket.order, '999')
         self.assertEqual(ticket.losses, Decimal('1904.9300000000'))
 
+        self.client.force_login(self.user_staff)
+        response = self.client.get(reverse('ticket_edit', kwargs={'pk': self.ticket_non_customer.pk}))
+        self.assertEqual(response.status_code, 200)
+
+        form = TicketManageForm(instance=ticket)
+        self.assertEqual(form.instance, self.ticket_non_customer)
+
         request = self.factory.get('/')
         request.user = self.user_staff
 
@@ -365,6 +372,9 @@ class HelpdeskTestCase(TestCase):
 
         response = ticket_edit(wrong_request, pk=ticket.pk)
         ticket.refresh_from_db()
+
+        form = TicketManageForm(instance=ticket, data=wrong_ticket_data)
+        self.assertFalse(form.is_valid())
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<ul class="errorlist">')
@@ -433,6 +443,34 @@ class HelpdeskTestCase(TestCase):
         response = ticket_list_done(request)
         self.assertEqual(response.status_code, 200)
 
+    def test_ticket_list_closed_view_non_logged_user(self):
+        request = self.factory.get('/tickets/closed/')
+        request.user = AnonymousUser()
+
+        response = ticket_list_closed(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_closed_view_staff_user(self):
+        request = self.factory.get('/tickets/closed/')
+        request.user = self.user_staff
+
+        response = ticket_list_closed(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_ticket_list_resolved_view_non_logged_user(self):
+        request = self.factory.get('/tickets/resolved/')
+        request.user = AnonymousUser()
+
+        response = ticket_list_resolved(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ticket_list_resolved_view_staff_user(self):
+        request = self.factory.get('/tickets/resolved/')
+        request.user = self.user_staff
+
+        response = ticket_list_resolved(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_ticket_list_feed_non_logged_user(self):
         request = self.factory.get('tickets/ajax/feed/')
         request.user = AnonymousUser()
@@ -477,3 +515,22 @@ class HelpdeskTestCase(TestCase):
 
         tickets_updates = TicketUpdate.objects.all()
         self.assertEqual(len(tickets_updates), 1)
+
+    def test_view_ticket_json_dashboard_context_non_logged_user(self):
+        request = self.client.get(reverse('json_dashboard_context'))
+        self.assertEqual(request.status_code, 302)
+
+    def test_view_ticket_json_dashboard_context_logged_user(self):
+        self.client.force_login(self.user_staff)
+        request = self.client.get(reverse('json_dashboard_context'))
+
+        self.assertEqual(request.status_code, 200)
+
+    def test_tickets_tables_builder_non_logged_user(self):
+        request = self.client.get(reverse('tickets_tables_builder'))
+        self.assertEqual(request.status_code, 302)
+
+    def test_tickets_tables_builder_logged_user(self):
+        self.client.force_login(self.user_staff)
+        request = self.client.get(reverse('tickets_tables_builder'))
+        self.assertEqual(request.status_code, 200)
