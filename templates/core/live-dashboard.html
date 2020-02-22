@@ -145,7 +145,7 @@
                                 {% endif %}
                             </td>
                             <td class="align-center">{{ ticket.get_priority_display }}</td>
-                            <td>
+                            <td style="white-space: normal;">
                                 {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
                                 {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
                             </td>
@@ -230,7 +230,7 @@
                                 {% endif %}
                             </td>
                             <td class="align-center">{{ ticket.get_priority_display }}</td>
-                            <td>
+                            <td style="white-space: normal;">
                                 {% for problem in ticket.problems %}{% if forloop.last %}'{{ problem }}'
                                 {% else %}'{{ problem }}', <br>{% endif %}{% endfor %}
                             </td>
