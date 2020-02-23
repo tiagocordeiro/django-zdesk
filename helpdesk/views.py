@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -77,6 +77,7 @@ def load_questions(request):
 
 
 @login_required
+@permission_required('helpdesk.add_ticket', raise_exception=True)
 def ticket_add(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)

@@ -3,7 +3,8 @@ import re
 from decimal import Decimal
 from io import BytesIO
 
-from django.contrib.auth.models import AnonymousUser, User, Group
+from django.contrib.auth.models import AnonymousUser, User, Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import TestCase, RequestFactory, Client
@@ -56,10 +57,20 @@ class HelpdeskTestCase(TestCase):
                                                          submitter_phone='(11) 12213-0987',
                                                          submitter_email='non@foo.bar')
 
-        # Staff user
-        self.user_staff = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
-        self.group = Group.objects.create(name='Testes')
-        self.group.user_set.add(self.user_staff)
+        # Gerente permissions
+        self.ticket_content_type = ContentType.objects.get_for_model(Ticket)
+        self.can_add_ticket = Permission.objects.get(codename='add_ticket')
+
+        # Gerente group
+        self.group = Group.objects.create(name='gerente')
+        self.group.permissions.add(self.can_add_ticket)
+
+        # Gerente user
+        self.user_gerente = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
+        self.user_gerente.is_active = True
+
+        # Add gerente user in gerente group
+        self.group.user_set.add(self.user_gerente)
 
     def test_retorno_queue_title(self):
         queue = Queue.objects.first()
@@ -170,7 +181,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_view_for_ticket_create_by_staff_user_logged_status_code(self):
         request = self.factory.get(reverse('ticket_add'))
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_add(request)
         self.assertEqual(response.status_code, 200)
@@ -185,8 +196,8 @@ class HelpdeskTestCase(TestCase):
             'submitter_email': 'nazir@rizan.foo',
             'status': 1,
             'priority': 3,
-            'tecnico_pre_diagnostico': self.user_staff,
-            'tecnico_de_campo': self.user_staff,
+            'tecnico_pre_diagnostico': self.user_gerente,
+            'tecnico_de_campo': self.user_gerente,
             'is_customer': '',
             'customer_code': '',
             'need_paper': '',
@@ -205,8 +216,8 @@ class HelpdeskTestCase(TestCase):
             'submitter_email': 'nazir@rizan.foo',
             'status': 'Inválido',
             'priority': 'ops',
-            'tecnico_pre_diagnostico': self.user_staff,
-            'tecnico_de_campo': self.user_staff,
+            'tecnico_pre_diagnostico': self.user_gerente,
+            'tecnico_de_campo': self.user_gerente,
             'is_customer': '',
             'customer_code': '',
             'need_paper': '',
@@ -245,15 +256,15 @@ class HelpdeskTestCase(TestCase):
             'submitter_email': 'nazir@rizan.foo',
             'status': 1,
             'priority': 3,
-            'tecnico_pre_diagnostico': self.user_staff.pk,
-            'tecnico_de_campo': self.user_staff.pk,
+            'tecnico_pre_diagnostico': self.user_gerente.pk,
+            'tecnico_de_campo': self.user_gerente.pk,
             'is_customer': '',
             'customer_code': '',
             'need_paper': '',
             'resolution_report': '',
         }
 
-        self.client.force_login(self.user_staff)
+        self.client.force_login(self.user_gerente)
 
         response = self.client.post(reverse('ticket_add'), data=new_ticket_data_by_staff)
         self.assertEqual(response.status_code, 302)
@@ -270,8 +281,8 @@ class HelpdeskTestCase(TestCase):
             'submitter_email': 'rizan@narin.foo',
             'status': 2,
             'priority': 4,
-            'tecnico_pre_diagnostico': self.user_staff.pk,
-            'tecnico_de_campo': self.user_staff.pk,
+            'tecnico_pre_diagnostico': self.user_gerente.pk,
+            'tecnico_de_campo': self.user_gerente.pk,
             'is_customer': '',
             'customer_code': '',
             'need_paper': '',
@@ -299,8 +310,8 @@ class HelpdeskTestCase(TestCase):
             'submitter_email': ticket.submitter_email,
             'status': 1,
             'priority': 4,
-            'tecnico_pre_diagnostico': self.user_staff.pk,
-            'tecnico_de_campo': self.user_staff.pk,
+            'tecnico_pre_diagnostico': self.user_gerente.pk,
+            'tecnico_de_campo': self.user_gerente.pk,
             'is_customer': True,
             'customer_code': 666,
             'order': 999,
@@ -309,7 +320,7 @@ class HelpdeskTestCase(TestCase):
         }
 
         request = self.factory.post(reverse('ticket_edit', kwargs={'pk': ticket.pk}), new_ticket_data)
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         setattr(request, 'session', 'session')
         messages = FallbackStorage(request)
@@ -325,7 +336,7 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(ticket.order, '999')
         self.assertEqual(ticket.losses, Decimal('1904.9300000000'))
 
-        self.client.force_login(self.user_staff)
+        self.client.force_login(self.user_gerente)
         response = self.client.get(reverse('ticket_edit', kwargs={'pk': self.ticket_non_customer.pk}))
         self.assertEqual(response.status_code, 200)
 
@@ -333,13 +344,13 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(form.instance, self.ticket_non_customer)
 
         request = self.factory.get('/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = dashboard(request)
         self.assertContains(response, 'R$ 1.904,93')
 
         request = self.factory.get('live/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = live_dashboard(request)
         self.assertContains(response, 'R$ 1.904,93')
@@ -354,8 +365,8 @@ class HelpdeskTestCase(TestCase):
             'submitter_email': '',
             'status': 'Status errado',
             'priority': 'Aqui deve ser inteiro',
-            'tecnico_pre_diagnostico': self.user_staff.pk,
-            'tecnico_de_campo': self.user_staff.pk,
+            'tecnico_pre_diagnostico': self.user_gerente.pk,
+            'tecnico_de_campo': self.user_gerente.pk,
             'is_customer': True,
             'customer_code': 666,
             'order': 999,
@@ -364,7 +375,7 @@ class HelpdeskTestCase(TestCase):
         }
 
         wrong_request = self.factory.post(reverse('ticket_edit', kwargs={'pk': ticket.pk}), wrong_ticket_data)
-        wrong_request.user = self.user_staff
+        wrong_request.user = self.user_gerente
 
         setattr(wrong_request, 'session', 'session')
         messages = FallbackStorage(wrong_request)
@@ -381,7 +392,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_load_questions_returns(self):
         request = self.factory.get(reverse('load_questions'), data={'queue': self.queue_cnc.pk})
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = load_questions(request)
         self.assertEqual(response.status_code, 200)
@@ -396,7 +407,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_all_view_staff_user(self):
         request = self.factory.get('/tickets/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_list_all(request)
         self.assertEqual(response.status_code, 200)
@@ -410,7 +421,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_todo_view_staff_user(self):
         request = self.factory.get('/tickets/todo/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_list_todo(request)
         self.assertEqual(response.status_code, 200)
@@ -424,7 +435,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_processing_view_staff_user(self):
         request = self.factory.get('/tickets/processing/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_list_processing(request)
         self.assertEqual(response.status_code, 200)
@@ -438,7 +449,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_done_view_staff_user(self):
         request = self.factory.get('/tickets/done/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_list_done(request)
         self.assertEqual(response.status_code, 200)
@@ -452,7 +463,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_closed_view_staff_user(self):
         request = self.factory.get('/tickets/closed/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_list_closed(request)
         self.assertEqual(response.status_code, 200)
@@ -466,7 +477,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_resolved_view_staff_user(self):
         request = self.factory.get('/tickets/resolved/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_list_resolved(request)
         self.assertEqual(response.status_code, 200)
@@ -480,7 +491,7 @@ class HelpdeskTestCase(TestCase):
 
     def test_ticket_list_feed_staff_user(self):
         request = self.factory.get('tickets/ajax/feed/')
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         response = ticket_feed(request)
         self.assertEqual(response.status_code, 200)
@@ -504,7 +515,7 @@ class HelpdeskTestCase(TestCase):
         }
 
         request = self.factory.post(reverse('ticket_comment', kwargs={'pk': ticket.pk}), new_comment)
-        request.user = self.user_staff
+        request.user = self.user_gerente
 
         setattr(request, 'session', 'session')
         messages = FallbackStorage(request)
@@ -521,7 +532,7 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(request.status_code, 302)
 
     def test_view_ticket_json_dashboard_context_logged_user(self):
-        self.client.force_login(self.user_staff)
+        self.client.force_login(self.user_gerente)
         request = self.client.get(reverse('json_dashboard_context'))
 
         self.assertEqual(request.status_code, 200)
@@ -531,6 +542,6 @@ class HelpdeskTestCase(TestCase):
         self.assertEqual(request.status_code, 302)
 
     def test_tickets_tables_builder_logged_user(self):
-        self.client.force_login(self.user_staff)
+        self.client.force_login(self.user_gerente)
         request = self.client.get(reverse('tickets_tables_builder'))
         self.assertEqual(request.status_code, 200)
