@@ -8,6 +8,7 @@ django-zDesk is a Django simple ticketing system
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/tiagocordeiro/django-zdesk/blob/master/LICENSE)
 [![codecov](https://codecov.io/gh/tiagocordeiro/django-zdesk/branch/master/graph/badge.svg)](https://codecov.io/gh/tiagocordeiro/django-zdesk)
 [![Build Status](https://travis-ci.org/tiagocordeiro/django-zdesk.svg?branch=master)](https://travis-ci.org/tiagocordeiro/django-zdesk)
+![Python application](https://github.com/tiagocordeiro/django-zdesk/workflows/Python%20application/badge.svg)
 
 ### Como rodar o projeto
 * Clone esse repositório.
@@ -31,6 +32,12 @@ python manage.py migrate
 Para cria um usuário administrador
 ```
 python manage.py createsuperuser --username dev --email dev@foo.bar
+```
+
+### Configurar grupos de usuários
+Cria grupos de usuários: [ `gerente` , `operador` ]
+```
+python manage.py loaddata core/fixtures/groups.json
 ```
 
 ### Rodar em ambiente de desenvolvimento

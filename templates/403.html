@@ -1,0 +1,56 @@
+<!doctype html>
+{% load static %}
+<html class="no-js " lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Django simple ticketing system">
+
+    <title>403 :: zDesk ::</title>
+    <!-- Favicon-->
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png"> <!-- Favicon-->
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.min.css' %}">
+</head>
+
+<body class="theme-blush">
+
+<div class="authentication">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                <form class="card auth_form">
+                    <div class="header">
+                        <img class="logo" src="{% static 'assets/images/logo.svg' %}" alt="">
+                        <h5>Error 403</h5>
+                        <span>Acesso negado!</span>
+                    </div>
+                    <div class="body">
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-block waves-effect waves-light">DASHBOARD</a>
+                        <div class="signin_with mt-3">
+                            <a href="javascript:void(0);" class="link">Precisa de ajuda?</a>
+                        </div>
+                    </div>
+                </form>
+                <div class="copyright text-center">
+                    &copy;
+                    <script>document.write(new Date().getFullYear())</script>
+                    <span><a href="{% url 'dashboard' %}">zDesk</a></span>
+                </div>
+            </div>
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <img src="{% static 'assets/images/maintanance.svg' %}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jquery Core Js -->
+<script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
+<script src="{% static 'assets/bundles/vendorscripts.bundle.js' %}"></script> <!-- Lib Scripts Plugin Js -->
+</body>
+</html>

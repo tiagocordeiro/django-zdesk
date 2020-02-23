@@ -18,3 +18,8 @@ def currency_display(valor):
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     valor = locale.currency(valor, grouping=True, symbol=None)
     return valor
+
+
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()

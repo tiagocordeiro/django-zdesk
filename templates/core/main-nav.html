@@ -1,4 +1,5 @@
 {% load static %}
+{% load core_extras %}
 <!-- Left Sidebar -->
 <aside id="leftsidebar" class="sidebar">
     <div class="navbar-brand">
@@ -25,7 +26,9 @@
             <li><a href="{% url 'dashboard' %}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-ticket-star"></i><span>Tickets</span></a>
                 <ul class="ml-menu">
-                    <li><a href="{% url 'ticket_add' %}">Adicionar</a></li>
+                    {% if request.user|has_group:"gerente" or request.user.is_superuser %}
+                        <li><a href="{% url 'ticket_add' %}">Adicionar</a></li>
+                    {% endif %}
                     <li><a href="{% url 'ticket_list_all' %}">Todos</a></li>
                     <li><a href="{% url 'ticket_list_todo' %}">Para fazer</a></li>
                     <li><a href="{% url 'ticket_list_processing' %}">Fazendo</a></li>
