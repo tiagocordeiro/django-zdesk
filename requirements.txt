@@ -27,7 +27,7 @@ certifi==2020.4.5.1
 chardet==3.0.4
 cloudinary==1.21.0
 dj3-cloudinary-storage==0.0.1
-idna==2.9
+idna==2.10
 mock==4.0.2
 requests==2.23.0
 six==1.15.0
