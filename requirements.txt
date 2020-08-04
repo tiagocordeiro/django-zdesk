@@ -20,7 +20,7 @@ psycopg2-binary==2.8.5
 # Heroku
 gunicorn==20.0.4
 django-heroku==0.3.1
-whitenoise==5.1.0
+whitenoise==5.2.0
 
 # Cloudinary
 certifi==2020.4.5.1
