@@ -11,6 +11,6 @@ pyflakes==2.2.0
 coverage==5.1
 
 # DebugToolbar
-django-debug-toolbar==2.2
+django-debug-toolbar==3.0
 
 -r requirements.txt
