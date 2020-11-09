@@ -23,7 +23,7 @@ django-heroku==0.3.1
 whitenoise==5.1.0
 
 # Cloudinary
-certifi==2020.4.5.1
+certifi==2020.11.8
 chardet==3.0.4
 cloudinary==1.21.0
 dj3-cloudinary-storage==0.0.1
