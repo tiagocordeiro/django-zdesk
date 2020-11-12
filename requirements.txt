@@ -29,7 +29,7 @@ cloudinary==1.22.0
 dj3-cloudinary-storage==0.0.3
 idna==2.10
 mock==4.0.2
-requests==2.24.0
+requests==2.25.0
 six==1.15.0
 urllib3==1.25.11
 
