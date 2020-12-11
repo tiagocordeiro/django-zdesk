@@ -24,7 +24,7 @@ whitenoise==5.2.0
 
 # Cloudinary
 certifi==2020.11.8
-chardet==3.0.4
+chardet==4.0.0
 cloudinary==1.22.0
 dj3-cloudinary-storage==0.0.3
 idna==2.10
