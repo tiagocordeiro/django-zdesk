@@ -1,16 +1,10 @@
 # Code Style
-pycodestyle==2.6.0
-
-# Flake8
-entrypoints==0.3
-flake8==3.8.4
-mccabe==0.6.1
-pyflakes==2.2.0
+flake8==3.9.2
 
 # Coverage
-coverage==5.3
+coverage==5.5
 
 # DebugToolbar
-django-debug-toolbar==3.1.1
+django-debug-toolbar==3.2.1
 
 -r requirements.txt
