@@ -3,8 +3,8 @@ django-zDesk is a Django simple ticketing system
 
 [![Updates](https://pyup.io/repos/github/tiagocordeiro/django-zdesk/shield.svg)](https://pyup.io/repos/github/tiagocordeiro/django-zdesk/)
 [![Python 3](https://pyup.io/repos/github/tiagocordeiro/django-zdesk/python-3-shield.svg)](https://pyup.io/repos/github/tiagocordeiro/django-zdesk/)
-[![Python 3.8.2](https://img.shields.io/badge/python-3.8.2-blue.svg)](https://www.python.org/downloads/release/python-382/)
-[![Django 3.0.4](https://img.shields.io/badge/django-3.0.4-blue.svg)](https://www.djangoproject.com/download/)
+[![Python 3.9.7](https://img.shields.io/badge/python-3.9.7-blue.svg)](https://www.python.org/downloads/release/python-397/)
+[![Django 3.2.8](https://img.shields.io/badge/django-3.2.8-blue.svg)](https://www.djangoproject.com/download/)
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/tiagocordeiro/django-zdesk/blob/master/LICENSE)
 [![codecov](https://codecov.io/gh/tiagocordeiro/django-zdesk/branch/master/graph/badge.svg)](https://codecov.io/gh/tiagocordeiro/django-zdesk)
 [![Build Status](https://travis-ci.org/tiagocordeiro/django-zdesk.svg?branch=master)](https://travis-ci.org/tiagocordeiro/django-zdesk)
