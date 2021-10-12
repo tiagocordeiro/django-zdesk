@@ -1,10 +1,10 @@
 # Code Style
-flake8==3.9.2
+flake8==4.0.1
 
 # Coverage
-coverage==5.5
+coverage==6.0.2
 
 # DebugToolbar
-django-debug-toolbar==3.2.1
+django-debug-toolbar==3.2.2
 
 -r requirements.txt
