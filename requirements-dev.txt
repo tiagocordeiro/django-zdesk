@@ -5,6 +5,6 @@ flake8==4.0.1
 coverage==6.0.2
 
 # DebugToolbar
-django-debug-toolbar==3.2.2
+django-debug-toolbar==3.5.0
 
 -r requirements.txt
