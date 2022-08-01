@@ -1,5 +1,5 @@
 # Code Style
-flake8==4.0.1
+flake8==5.0.1
 
 # Coverage
 coverage==6.0.2
