@@ -22,4 +22,4 @@ django-heroku==0.3.1
 dj3-cloudinary-storage==0.0.5
 
 # Sentry
-sentry-sdk==1.4.3
+sentry-sdk==1.19.1
